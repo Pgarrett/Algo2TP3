@@ -15,8 +15,10 @@ void test_constructor_con_mapa() {
   cc.Agregar(Coordenada(1,2));
   cc.Agregar(Coordenada(10,0));
   cc.Agregar(Coordenada(1,4));
+
   Driver d(cc);
-  ASSERT( d.mapa() == cc );
+  ASSERT( false );
+//  ASSERT( d.mapa() == cc );
 }
 
 void test_agregar_jugadores(){
