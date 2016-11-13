@@ -65,7 +65,7 @@ private:
   string _location;
 };
 
-void make_missing_exception_error(string loc) {
+inline void make_missing_exception_error(string loc) {
   throw MissingExceptionExpectationException(loc);
 }
 
@@ -102,24 +102,24 @@ void make_wrong_type_exception_error(T e, const char* expected, string loc) {
   throw WrongExceptionExpectationException(e, expected, loc);
 }
 
-string location(const char* file, int line) {
+inline string location(const char* file, int line) {
   ostringstream os;
   os << file << ":" << line;
   return os.str().c_str();
 }
 
-string bool_to_s(bool b) { return b ? "true" : "false"; }
+inline string bool_to_s(bool b) { return b ? "true" : "false"; }
 
 #define SUPPORT_ASSERT_EQ_ON(T) \
-void assert_eq(T lhs, T rhs, string loc) { if (!(lhs == rhs)) { make_error(lhs, rhs, loc); } }\
+inline void assert_eq(T lhs, T rhs, string loc) { if (!(lhs == rhs)) { make_error(lhs, rhs, loc); } }\
 
 
 SUPPORT_ASSERT_EQ_ON(int)
 SUPPORT_ASSERT_EQ_ON(double)
 SUPPORT_ASSERT_EQ_ON(float)
-void assert_eq(bool lhs, bool rhs, string loc) { if (lhs != rhs) { make_error(bool_to_s(lhs), bool_to_s(rhs), loc); } }
-void assert_eq(string lhs, string rhs, string loc) { if (lhs.compare(rhs) != 0) { make_error(lhs, rhs, loc); } }
-void assert_eq(const char* lhs, const char* rhs, string loc) { assert_eq(string(lhs), string(rhs), loc); }
+inline void assert_eq(bool lhs, bool rhs, string loc) { if (lhs != rhs) { make_error(bool_to_s(lhs), bool_to_s(rhs), loc); } }
+inline void assert_eq(string lhs, string rhs, string loc) { if (lhs.compare(rhs) != 0) { make_error(lhs, rhs, loc); } }
+inline void assert_eq(const char* lhs, const char* rhs, string loc) { assert_eq(string(lhs), string(rhs), loc); }
 
 }
 

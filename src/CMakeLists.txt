@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(src)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
 
 set(SOURCE_FILES
     aed2/Arreglo.h
@@ -17,6 +17,6 @@ set(SOURCE_FILES
     Driver.h
     mini_test.h
     tests.cpp
-    TiposJuego.h)
+    TiposJuego.h test/TestsMapa.cpp test/TestsMapa.h test/TestsJuego.cpp test/TestsJuego.h)
 
 add_executable(src ${SOURCE_FILES})
