@@ -19,11 +19,15 @@ private:
 
     static void test_pos_inexistente();
 
+    static void test_ancho_sin_coords(); // TODO ver como testear restricciones
+
+    static void test_ancho();
+
+    static void test_largo();
+
     static void test_hay_camino();
 
-    static void ancho();
-
-    static void largo();
+    static void test_copia();
 };
 
 
