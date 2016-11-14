@@ -1,5 +1,9 @@
 #include "Driver.h"
 
+/*
+ *  HAY QUE SACAR EL CHECKEO DE PRECONDICIONES DE LOS MODULOS BASICOS
+ */
+
 // Instanciar un mapa y un juego 
 
 Driver::Driver(const Conj< Coordenada > & cs)

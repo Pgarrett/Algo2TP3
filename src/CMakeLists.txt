@@ -17,6 +17,7 @@ set(SOURCE_FILES
     Driver.h
     mini_test.h
     tests.cpp
-    TiposJuego.h test/TestsMapa.cpp test/TestsMapa.h test/TestsJuego.cpp test/TestsJuego.h)
+    TiposJuego.h test/TestsMapa.cpp test/TestsMapa.h test/TestsJuego.cpp test/TestsJuego.h modulos/Mapa.cpp modulos/Mapa.h)
 
 add_executable(src ${SOURCE_FILES})
+add_definitions(-std=c++03)
