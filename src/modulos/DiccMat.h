@@ -20,22 +20,32 @@ public:
 
     const bool definido(const Coordenada &c) const;
 
-    void definir(const Coordenada &c, const T t) const;
+    void definir(const Coordenada &c, const T t);
+
+    const T significado(const Coordenada &c) const;
+
+    void borrar(const Coordenada &c);
 
 private:
     const Nat _ancho, _largo;
+    Conj<Coordenada> claves;
 
     struct Tupla {
         bool usado;
-        T t;
+        Conj<Coordenada>::Iterador it;
+        T valor;
 
-        Tupla() : usado(false) {}
+        Tupla() : usado(false) { }
     };
 
     typename DiccMat::Tupla *_valores;
 
     inline bool enRango(Coordenada c) const {
         return c.latitud < _largo && c.longitud < _ancho;
+    }
+
+    inline Nat aplanar(const Coordenada c) const {
+        return c.longitud * _ancho + c.latitud;
     }
 
 };
@@ -65,21 +75,35 @@ const Nat DiccMat<T>::largo() const {
 
 template<class T>
 const Conj<Coordenada>::const_Iterador DiccMat<T>::coordenadas() const {
-    Conj<Coordenada> a;
-    return a.CrearIt();
+    return claves.CrearIt();
 }
 
 template<class T>
 const bool DiccMat<T>::definido(const Coordenada &c) const {
     assert(enRango(c));
-    return _valores[0].usado;
+    return _valores[aplanar(c)].usado;
 }
 
 template<class T>
-void DiccMat<T>::definir(const Coordenada &c, const T t) const {
+void DiccMat<T>::definir(const Coordenada &c, const T t) {
     assert(enRango(c));
-    _valores[0].usado = true;
-    _valores[0].t = t;
+    if (!definido(c))
+        _valores[aplanar(c)].it = claves.AgregarRapido(c);
+    _valores[aplanar(c)].usado = true;
+    _valores[aplanar(c)].valor = t;
+}
+
+template<class T>
+const T DiccMat<T>::significado(const Coordenada &c) const {
+    assert(definido(c));
+    return _valores[aplanar(c)].valor;
+}
+
+template<class T>
+void DiccMat<T>::borrar(const Coordenada &c) {
+    assert(definido(c));
+    _valores[aplanar(c)].usado = false;
+    _valores[aplanar(c)].it.EliminarSiguiente();
 }
 
 #endif //SRC_DICCMAT_H

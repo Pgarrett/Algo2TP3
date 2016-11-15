@@ -17,7 +17,23 @@ private:
 
     static void test_diccmat_definir();
 
+    static void test_diccmat_redefinir();
+
     static void test_diccmat_coordenadas();
+
+    static void test_diccmat_coordenadas_sin_repetir();
+
+    static void test_diccmat_significado();
+
+    static void test_diccmat_significado_redefinido();
+
+    static void test_diccmat_borrar();
+
+    static void test_diccmat_coordenadas_borradas();
+
+    static void test_diccmat_borrar_y_definir();
+
+    static void test_diccmat_general();
 };
 
 
