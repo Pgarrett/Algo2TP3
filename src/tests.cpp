@@ -4,10 +4,12 @@
 
 #include "test/TestsMapa.h"
 #include "test/TestsJuego.h"
+#include "test/TestsDiccMat.h"
 
 int main(int argc, char **argv)
 {
   TestsMapa::correr_tests();
+  TestsDiccMat::correr_tests();
 //  TestsJuego::correr_tests();
   return 0;
 }

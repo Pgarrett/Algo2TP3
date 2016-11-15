@@ -1,27 +1,23 @@
-#include <vector>
-#include <cstdio>
 #include "TestsMapa.h"
 
 #include "../mini_test.h"
 #include "../modulos/Mapa.h"
 
-using namespace aed2;
-
 void TestsMapa::correr_tests() {
-    RUN_TEST(test_crear_mapa)
-    RUN_TEST(test_agregar_coordenada)
-    RUN_TEST(test_coordenadas_repetidas)
-    RUN_TEST(test_coordenadas)
-    RUN_TEST(test_pos_existente)
-    RUN_TEST(test_pos_inexistente)
-//    RUN_TEST(test_ancho_sin_coords)
-    RUN_TEST(test_ancho)
-    RUN_TEST(test_largo)
+    RUN_TEST(test_mapa_crear)
+    RUN_TEST(test_mapa_agregar_coordenada)
+    RUN_TEST(test_mapa_coordenadas_repetidas)
+    RUN_TEST(test_mapa_coordenadas)
+    RUN_TEST(test_mapa_pos_existente)
+    RUN_TEST(test_mapa_pos_inexistente)
+//    RUN_TEST(test_mapa_ancho_sin_coords)
+    RUN_TEST(test_mapa_ancho)
+    RUN_TEST(test_mapa_largo)
 }
 
 
 // El mapa deberia crearse sin coordenadas
-void TestsMapa::test_crear_mapa() {
+void TestsMapa::test_mapa_crear() {
     Mapa mapa;
 
     ASSERT(mapa.coordenadas().EsVacio());
@@ -29,7 +25,7 @@ void TestsMapa::test_crear_mapa() {
 
 
 // El mapa deberia tener coordenadas cuando se le agregan
-void TestsMapa::test_agregar_coordenada() {
+void TestsMapa::test_mapa_agregar_coordenada() {
     Mapa mapa;
 
     mapa.agregarCoordenada(Coordenada(1, 1));
@@ -39,7 +35,7 @@ void TestsMapa::test_agregar_coordenada() {
 
 
 // El mapa no deberia tener coordenadas repetidas
-void TestsMapa::test_coordenadas_repetidas() {
+void TestsMapa::test_mapa_coordenadas_repetidas() {
     Mapa mapa;
 
     mapa.agregarCoordenada(Coordenada(1, 1));
@@ -57,7 +53,7 @@ static Mapa crear_mapa_con(Coordenada c1, Coordenada c2, Coordenada c3) {
 }
 
 // El mapa deberia devolver solo las coordenadas que se le agregaron
-void TestsMapa::test_coordenadas() {
+void TestsMapa::test_mapa_coordenadas() {
     Coordenada c1(1, 1), c2(2, 2), c3(3, 3);
     Mapa mapa = crear_mapa_con(c1, c2, c3);
 
@@ -71,7 +67,7 @@ void TestsMapa::test_coordenadas() {
 
 
 // Una coordenada sin agregar no deberia existir en el mapa
-void TestsMapa::test_pos_inexistente() {
+void TestsMapa::test_mapa_pos_inexistente() {
     Mapa mapa;
 
     ASSERT(!mapa.posExistente(Coordenada(2, 2)));
@@ -79,7 +75,7 @@ void TestsMapa::test_pos_inexistente() {
 
 
 // Una coordenada agregada deberia existir en el mapa
-void TestsMapa::test_pos_existente() {
+void TestsMapa::test_mapa_pos_existente() {
     Mapa mapa;
     Coordenada coor(1, 1);
 
@@ -89,7 +85,7 @@ void TestsMapa::test_pos_existente() {
 }
 
 // Pedir el ancho de un mapa sin coordenadas deberia tirar error por restricciones
-void TestsMapa::test_ancho_sin_coords() {
+void TestsMapa::test_mapa_ancho_sin_coords() {
     Mapa mapa;
     bool error;
 
@@ -103,24 +99,24 @@ void TestsMapa::test_ancho_sin_coords() {
 }
 
 
-// El ancho del mapa deberia ser la latitud mas grande entre las coordenadas
-void TestsMapa::test_ancho() {
-    Coordenada c1(1, 4), c2(2, 2), c3(5, 3);
+// El ancho del mapa deberia ser uno mas que la latitud mas grande entre las coordenadas
+void TestsMapa::test_mapa_ancho() {
+    Coordenada c1(1, 4), c2(2, 2), c3(8, 3);
     Mapa mapa = crear_mapa_con(c1, c2, c3);
 
     Nat ancho = mapa.ancho();
 
-    ASSERT_EQ(ancho, 4);
+    ASSERT_EQ(ancho, 5);
 }
 
-// El largo del mapa deberia ser la latitud mas grande entre las coordenadas
-void TestsMapa::test_largo() {
-    Coordenada c1(1, 4), c2(2, 2), c3(5, 3);
+// El largo del mapa deberia ser uno mas que la latitud mas grande entre las coordenadas
+void TestsMapa::test_mapa_largo() {
+    Coordenada c1(1, 8), c2(2, 2), c3(5, 3);
     Mapa mapa = crear_mapa_con(c1, c2, c3);
 
     Nat largo = mapa.largo();
 
-    ASSERT_EQ(largo, 5);
+    ASSERT_EQ(largo, 6);
 }
 
 

@@ -27,7 +27,7 @@ Nat Mapa::ancho() const {
         if (c.longitud > ancho)
             ancho = c.longitud;
     }
-    return ancho;
+    return ++ancho;
 }
 
 Nat Mapa::largo() const {
@@ -38,7 +38,7 @@ Nat Mapa::largo() const {
         if (c.latitud > largo)
             largo = c.latitud;
     }
-    return largo;
+    return ++largo;
 }
 
 Mapa::~Mapa() {

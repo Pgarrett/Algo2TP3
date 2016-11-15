@@ -132,6 +132,7 @@ inline void assert_eq(const char* lhs, const char* rhs, string loc) { assert_eq(
   catch (...) { mt_ok = false; std::cout << "failed"; }\
   if (mt_ok) { std::cout << "ok"; }\
   std::cout << std::endl << std::flush;\
+  if (!mt_ok) { std::cerr << "Fallo test: " << #test << std::endl;}\
   }\
 }
 #define ASSERT_EQ(lhs, rhs) { mt::assert_eq((lhs), (rhs), mt::location(__FILE__, __LINE__)); }
