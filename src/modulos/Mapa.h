@@ -3,6 +3,7 @@
 
 #include "../TiposJuego.h"
 #include "../aed2/Conj.h"
+#include "DiccMat.h"
 
 class Mapa {
 
@@ -18,6 +19,10 @@ public:
 
 private:
     Conj<Coordenada> coords;
+    DiccMat<Nat>* secciones;
+
+    void redefinirSecciones();
+    void definirSeccion(Coordenada c, Nat id);
 };
 
 

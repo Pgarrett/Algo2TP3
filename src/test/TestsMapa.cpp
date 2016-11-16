@@ -13,6 +13,9 @@ void TestsMapa::correr_tests() {
 //    RUN_TEST(test_mapa_ancho_sin_coords)
     RUN_TEST(test_mapa_ancho)
     RUN_TEST(test_mapa_largo)
+    RUN_TEST(test_mapa_no_hay_camino)
+    RUN_TEST(test_mapa_hay_camino)
+    RUN_TEST(test_mapa_hay_camino_largo)
 }
 
 
@@ -91,7 +94,7 @@ void TestsMapa::test_mapa_ancho_sin_coords() {
 
     try {
         mapa.ancho();
-    } catch (...){
+    } catch (...) {
         error = true;
     }
 
@@ -119,4 +122,33 @@ void TestsMapa::test_mapa_largo() {
     ASSERT_EQ(largo, 6);
 }
 
+// No deberia haber un camino entre dos coordenadas no conexas
+void TestsMapa::test_mapa_no_hay_camino() {
+    Coordenada c1(1, 2), c2(3, 3), c3(4, 4);
 
+    Mapa mapa = crear_mapa_con(c1, c2, c3);
+
+    ASSERT(!mapa.hayCamino(c1, c3))
+    ASSERT(!mapa.hayCamino(c2, c3))
+}
+
+// Deberia haber camino entre coordenadas juntas
+void TestsMapa::test_mapa_hay_camino() {
+    Mapa mapa;
+    Coordenada c1(1, 1), c2(1, 2);
+
+    mapa.agregarCoordenada(c1);
+    mapa.agregarCoordenada(c2);
+
+    ASSERT(mapa.hayCamino(c1, c2))
+}
+
+// Deberia haber camino entre coordenadas unidas por otras coordenadas
+void TestsMapa::test_mapa_hay_camino_largo() {
+    Coordenada c1(1, 1), c2(1, 2), c3(2, 2);
+
+    Mapa mapa = crear_mapa_con(c1, c2, c3);
+
+    ASSERT(mapa.hayCamino(c1, c3))
+    ASSERT(mapa.hayCamino(c3, c1))
+}

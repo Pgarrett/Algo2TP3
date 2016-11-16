@@ -20,6 +20,7 @@ void TestsDiccMat::correr_tests() {
     RUN_TEST(test_diccmat_coordenadas_borradas)
     RUN_TEST(test_diccmat_borrar_y_definir)
     RUN_TEST(test_diccmat_general)
+    RUN_TEST(test_diccmat_no_cuadrada)
 }
 
 
@@ -243,4 +244,16 @@ void TestsDiccMat::test_diccmat_general() {
     ASSERT_EQ(d.significado(Coor(11, 3)), 15)
     ASSERT_EQ(d.significado(Coor(10, 14)), 15)
     ASSERT_EQ(d.significado(Coor(17, 15)), 1)
+}
+
+// Caso que daba error al aplanar
+void TestsDiccMat::test_diccmat_no_cuadrada() {
+    DiccMat<Nat> d(4, 3);
+    Coor c1(3, 0), c2(0, 1);
+
+    d.definir(c1, 4);
+    d.definir(c2, 8);
+
+    ASSERT_EQ( d.significado(c1), 4)
+    ASSERT_EQ( d.significado(c2), 8)
 }

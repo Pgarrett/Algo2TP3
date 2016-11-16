@@ -25,7 +25,13 @@ private:
 
     static void test_mapa_largo();
 
+    static void test_mapa_no_hay_camino();
+
     static void test_mapa_hay_camino();
+
+    static void test_mapa_hay_camino_largo();
+
+    static void test_mapa_general();
 
     static void test_mapa_copia();
 };

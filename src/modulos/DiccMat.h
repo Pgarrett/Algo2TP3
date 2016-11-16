@@ -45,13 +45,13 @@ private:
     }
 
     inline Nat aplanar(const Coordenada c) const {
-        return c.longitud * _ancho + c.latitud;
+        return c.latitud * _ancho + c.longitud;
     }
 
 };
 
 template<class T>
-DiccMat<T>::DiccMat(Nat largo, Nat ancho) : _ancho(ancho), _largo(largo) {
+DiccMat<T>::DiccMat(Nat largo, Nat ancho) : _largo(largo), _ancho(ancho) {
     assert(ancho > 0 && largo > 0);
     _valores = new Tupla[_ancho * _largo];
     for (unsigned int i = 0; i < _ancho * _largo; i++)

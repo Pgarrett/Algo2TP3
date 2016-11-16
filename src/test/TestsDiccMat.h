@@ -34,6 +34,8 @@ private:
     static void test_diccmat_borrar_y_definir();
 
     static void test_diccmat_general();
+
+    static void test_diccmat_no_cuadrada();
 };
 
 
