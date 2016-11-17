@@ -21,5 +21,9 @@ void Driver::agregarPokemon(const Pokemon & p, const Coordenada & c)
   assert(false);
 }
 
+Nat Driver::indiceRareza(const Pokemon &p) const {
+  return this->j.indiceRareza(p);
+}
+
 
 // TODO: Completar con el resto de las implementaciones

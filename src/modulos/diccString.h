@@ -2,7 +2,7 @@
 #define DICC_STRING_H
 
 
-#include "aed2.h"
+#include "../aed2.h"
 #include <string>
 
 using namespace std;
