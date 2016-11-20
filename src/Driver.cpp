@@ -22,7 +22,8 @@ void Driver::agregarPokemon(const Pokemon & p, const Coordenada & c)
 }
 
 Nat Driver::indiceRareza(const Pokemon &p) const {
-  return this->j.indiceRareza(p);
+//  return this->j.indiceRareza(p);
+  return 0;
 }
 
 

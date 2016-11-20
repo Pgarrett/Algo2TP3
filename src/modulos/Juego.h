@@ -1,18 +1,12 @@
 #ifndef SRC_JUEGO_H
 #define SRC_JUEGO_H
 
-#include "../aed2/Conj.h"
-#include "../aed2/Dicc.h"
-#include "../aed2/TiposBasicos.h"
-#include "../TiposJuego.h"
-#include "DiccMat.h"
-#include "diccString.h"
 #include "Mapa.h"
 
 class Juego {
 
 public:
-    Juego(const Mapa m);    // CrearJuego
+    Juego(const Mapa &m);    // CrearJuego
     ~Juego();
 
 /* Agrega el pokemon pasado por parametro en su coordenada al juego. */
@@ -38,7 +32,7 @@ public:
     void moverse(const Jugador &j, const Coordenada &c);
 
     /* Devuelve todas las coordenadas que posee el mapa del Juego. */
-    Conj<Coordenada> mapa() const;
+    const Mapa mapa() const;
 
     /* Indica si hay un camino posible entre dos coordenadas
     *  Requiere que las coordenadas existan en el mapa */
@@ -108,6 +102,9 @@ public:
 
     /* Indica cuantos pokemons de la especie de unPokemon hay en pokemons. */
     Nat cantMismaEspecie(const Pokemon &p) const;
+
+private:
+    Mapa _mapa;
 
 };
 

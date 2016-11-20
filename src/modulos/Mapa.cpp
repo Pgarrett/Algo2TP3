@@ -7,12 +7,22 @@ typedef Conj<Coor>::const_Iterador ItConj;
 Mapa::Mapa() : secciones(NULL) {
 }
 
+Mapa::Mapa(const Mapa &mapa) {
+    secciones = NULL;
+    Conj<Coor> coords = mapa.coordenadas();
+    ItConj it = coords.CrearIt();
+    while (it.HaySiguiente()) {
+        agregarCoordenada(it.Siguiente());
+        it.Avanzar();
+    }
+}
+
 void Mapa::agregarCoordenada(const Coordenada &c) {
     coords.Agregar(c);
     redefinirSecciones();
 }
 
-void Mapa::redefinirSecciones(){
+void Mapa::redefinirSecciones() {
     delete secciones;
     secciones = new DiccMat<Nat>(largo(), ancho());
     Nat seccion = 0;

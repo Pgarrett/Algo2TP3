@@ -3,6 +3,8 @@
 #include "../mini_test.h"
 #include "../modulos/Mapa.h"
 
+typedef Coordenada Coor;
+
 void TestsMapa::correr_tests() {
     RUN_TEST(test_mapa_crear)
     RUN_TEST(test_mapa_agregar_coordenada)
@@ -16,6 +18,7 @@ void TestsMapa::correr_tests() {
     RUN_TEST(test_mapa_no_hay_camino)
     RUN_TEST(test_mapa_hay_camino)
     RUN_TEST(test_mapa_hay_camino_largo)
+    RUN_TEST(test_mapa_copia)
 }
 
 
@@ -152,3 +155,19 @@ void TestsMapa::test_mapa_hay_camino_largo() {
     ASSERT(mapa.hayCamino(c1, c3))
     ASSERT(mapa.hayCamino(c3, c1))
 }
+
+void TestsMapa::test_mapa_copia() {
+    Mapa mapa = crear_mapa_con(Coor(1, 1), Coor(1, 2), Coor(2, 2));
+    Mapa copia(mapa);
+
+    ASSERT(mapa.coordenadas() == copia.coordenadas())
+
+    Coor c = Coor(3, 3);
+    mapa.agregarCoordenada(c);
+
+    Conj<Coordenada> coordenadas = mapa.coordenadas();
+    ASSERT(coordenadas.Pertenece(c))
+    coordenadas.Eliminar(c);
+    ASSERT(coordenadas == copia.coordenadas())
+}
+

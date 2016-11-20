@@ -10,6 +10,7 @@ class Mapa {
 public:
     Mapa();
     ~Mapa();
+    Mapa(const Mapa& mapa);
     void agregarCoordenada(const Coordenada& c);
     Conj<Coordenada> coordenadas() const;
     bool posExistente(const Coordenada& c) const;
