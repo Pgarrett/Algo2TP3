@@ -104,7 +104,32 @@ public:
     Nat cantMismaEspecie(const Pokemon &p) const;
 
 private:
+
+    struct InfoPokemon {
+        Pokemon tipo;
+        Coordenada posicion;
+        Nat contador;
+        // Necesito que este commiteado el modulo para seguir
+//        ColaPrior<Nat, Conj<Jugador>::Iterador> jugadoresEnRango;
+        bool salvaje;
+    };
+
+    struct InfoJugador {
+        Conj<Jugador>::Iterador id;
+        bool estaConectado;
+        Nat sanciones;
+        Conj<Conj<InfoPokemon>::Iterador> pokemonesCapturados;
+        Coordenada posicion;
+        Conj<Jugador>::Iterador itPosicion;
+        InfoJugador(Conj<Jugador>::Iterador ID) : id(ID), estaConectado(false), sanciones(0),
+                                                  pokemonesCapturados(Conj<Conj<InfoPokemon>::Iterador>()), posicion(Coordenada(0, 0)),
+                                                  itPosicion(Conj<Jugador>().CrearIt()) { }
+    };
+
     Mapa _mapa;
+    Conj<InfoJugador> _jugadores;
+    Conj<Jugador> _idsJugadores;
+    Conj<Jugador> _expulsados;
 
 };
 

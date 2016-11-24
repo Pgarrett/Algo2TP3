@@ -5,11 +5,13 @@
 #include "test/TestsMapa.h"
 #include "test/TestsJuego.h"
 #include "test/TestsDiccMat.h"
+#include "test/TestsDiccString.h"
 
 int main(int argc, char **argv)
 {
-  TestsMapa::correr_tests();
   TestsDiccMat::correr_tests();
+  TestsDiccString::correr_tests();
+  TestsMapa::correr_tests();
   TestsJuego::correr_tests();
   return 0;
 }
