@@ -1,2 +1,12 @@
 src/.idea/
 src/tests
+src/eTest
+src/Driver.o
+src/aed2/ConjAcotado.o
+src/modulos/Juego.o
+src/modulos/Mapa.o
+src/test/TestsDiccMat.o
+src/test/TestsDiccString.o
+src/test/TestsJuego.o
+src/test/TestsMapa.o
+src/tests.o
