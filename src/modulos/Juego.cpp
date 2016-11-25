@@ -1,6 +1,6 @@
 #include "Juego.h"
 
-Juego::Juego(const Mapa &m) : _mapa(m) {
+Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Conj<InfoJugador>()), _idsJugadores(Conj<Jugador>()), _expulsados(Conj<Jugador>())  {
 }
 
 Juego::~Juego() {
@@ -16,6 +16,10 @@ Jugador Juego::agregarJugador() {
     Conj<Jugador>::Iterador itConjIds = _idsJugadores.AgregarRapido(id);
     _jugadores.AgregarRapido(InfoJugador(itConjIds));
     return id;
+}
+
+Conj<Jugador> Juego::expulsados() const {
+    return _expulsados;
 }
 
 
