@@ -27,6 +27,14 @@ bool Juego::estaConectado(const Jugador &j) const {
     return _jugadoresPorID.operator[](j).info.Siguiente().estaConectado;
 }
 
+Nat Juego::sanciones(const Jugador &j) const {
+    return _jugadoresPorID.operator[](j).info.Siguiente().sanciones;
+}
+
+Conj<Jugador> Juego::jugadores() const {
+    return _idsJugadores;
+}
+
 
 
 

@@ -9,14 +9,23 @@ public:
     static void correr_tests();
 
 private:
+    // CrearJuego
     static void test_juego_constructor_con_mapa();
 
-    // Agregar jugador
+    static void test_juego_crear_juego_sin_jugadores();
+
+    static void test_juego_crear_juego_sin_expulsados();
+
+    static void test_juego_crear_juego_sin_posiciones_con_pokemons();
+
+    // AgregarJugador
     static void test_juego_jugadores_con_id_secuencial();
 
     static void test_juego_jugador_nuevo_no_modifica_expulsados();
 
     static void test_juego_jugador_nuevo_desconectado();
+
+    static void test_juego_jugador_nuevo_sin_sanciones();
 
     static void test_juego_jugador_nuevo_sin_pokemones();
 
