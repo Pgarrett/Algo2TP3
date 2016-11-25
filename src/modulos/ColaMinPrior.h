@@ -103,9 +103,9 @@ class ColaMinPrior
 
       Iterador();
 
-      //Iterador(const typename ColaMinPrior<T>::Iterador& otro);
+      Iterador(const typename ColaMinPrior<T>::Iterador& otro);
 
-      //Iterador& operator = (const typename ColaMinPrior<T>::Iterador& otro);
+      Iterador& operator = (const typename ColaMinPrior<T>::Iterador& otro);
 
       bool HaySiguiente() const;
 
@@ -114,7 +114,7 @@ class ColaMinPrior
 
       void EliminarSiguiente();
       
-      //bool operator == (const typename ColaMinPrior<T>::Iterador& otro) const;
+      bool operator == (const typename ColaMinPrior<T>::Iterador& otro) const;
   private:
 
       ColaMinPrior<T>* _cola;
@@ -137,17 +137,17 @@ class ColaMinPrior
 
       const_Iterador();
 
-      //const_Iterador(const typename ColaMinPrior<T>::const_Iterador& otro);
+      const_Iterador(const typename ColaMinPrior<T>::const_Iterador& otro);
 
-      //const_Iterador(const typename ColaMinPrior<T>::Iterador& otro);
+      const_Iterador(const typename ColaMinPrior<T>::Iterador& otro);
 
-      //const_Iterador& operator = (const typename ColaMinPrior<T>::const_Iterador& otro);
+      const_Iterador& operator = (const typename ColaMinPrior<T>::const_Iterador& otro);
 
       bool HaySiguiente() const;
 
       const T& Siguiente() const;
 
-      //bool operator == (const typename ColaMinPrior<T>::const_Iterador& otro) const;
+      bool operator == (const typename ColaMinPrior<T>::const_Iterador& otro) const;
 
   private:
 
@@ -563,30 +563,27 @@ void Lista<T>::Comienzo()
 }
 */
 
-/*template <typename T>
+template <typename T>
 typename ColaMinPrior<T>::Iterador ColaMinPrior<T>::CrearIt()
 {
   return Iterador(this, _proximo);
 }
-
-template <typename T>
+/*template <typename T>
 typename ColaMinPrior<T>::Iterador ColaMinPrior<T>::CrearItUlt()
 {
   return Iterador(this, NULL);
 }*/
+template <typename T>
+typename ColaMinPrior<T>::const_Iterador ColaMinPrior<T>::CrearIt() const
+{
+  return const_Iterador(this, _proximo);
+}
 /*
 template <typename T>
-typename Lista<T>::const_Iterador Lista<T>::CrearIt() const
-{
-  return const_Iterador(this, primero_);
-}
-
-template <typename T>
-typename Lista<T>::const_Iterador Lista<T>::CrearItUlt() const
+typename ColaMinPrior<T>::const_Iterador ColaMinPrior<T>::CrearItUlt() const
 {
   return const_Iterador(this, NULL);
-}
-*/
+}*/
   // Implementacion Iterador
 
 template <typename T>
@@ -594,19 +591,19 @@ ColaMinPrior<T>::Iterador::Iterador()
   : _cola(NULL), _nodo_siguiente(NULL)
 {}
 
-/*template <typename T>
+template <typename T>
 ColaMinPrior<T>::Iterador::Iterador(const typename ColaMinPrior<T>::Iterador& otro)
   : _cola(otro._cola), _nodo_siguiente(otro._nodo_siguiente)
-{}*/
+{}
 
-/*template <typename T>
+template <typename T>
 typename ColaMinPrior<T>::Iterador& ColaMinPrior<T>::Iterador::operator= (const typename ColaMinPrior<T>::Iterador& otro)
 {
 	_cola = otro._cola;
 	_nodo_siguiente = otro._nodo_siguiente;
 
   return *this;
-}*/
+}
 
 template <typename T>
 bool ColaMinPrior<T>::Iterador::HaySiguiente() const
@@ -655,138 +652,75 @@ void ColaMinPrior<T>::Iterador::EliminarSiguiente() {
 	}
 	_nodo_siguiente->padre = NULL;
 }
-/*template<class T>
+template<class T>
 bool ColaMinPrior<T>::Iterador::operator == (const typename ColaMinPrior<T>::Iterador& otro) const {
   return _cola == otro._cola && _nodo_siguiente == otro._nodo_siguiente;
-}*/
+}
 
 template<class T>
 ColaMinPrior<T>::Iterador::Iterador(ColaMinPrior<T>* cola, typename ColaMinPrior<T>::Nodo* proximo)
   : _cola(cola), _nodo_siguiente(proximo)
 {};
 
-/*
   // Implementacion const_Iterador
 
 template <typename T>
-Lista<T>::const_Iterador::const_Iterador()
-  : lista_(NULL), nodo_siguiente_(NULL)
+ColaMinPrior<T>::const_Iterador::const_Iterador()
+  : _cola(NULL), _nodo_siguiente(NULL)
 {}
 
 template <typename T>
-Lista<T>::const_Iterador::const_Iterador(const typename Lista<T>::const_Iterador& otro)
-  : lista_(otro.lista_), nodo_siguiente_(otro.nodo_siguiente_)
+ColaMinPrior<T>::const_Iterador::const_Iterador(const typename ColaMinPrior<T>::const_Iterador& otro)
+  : _cola(otro._cola), _nodo_siguiente(otro._nodo_siguiente)
 {}
 
 template <typename T>
-Lista<T>::const_Iterador::const_Iterador(const typename Lista<T>::Iterador& otro)
-  : lista_(otro.lista_), nodo_siguiente_(otro.nodo_siguiente_)
+ColaMinPrior<T>::const_Iterador::const_Iterador(const typename ColaMinPrior<T>::Iterador& otro)
+  : _cola(otro._cola), _nodo_siguiente(otro._nodo_siguiente)
 {}
 
 template <typename T>
-typename Lista<T>::const_Iterador& Lista<T>::const_Iterador::operator = (const typename Lista<T>::const_Iterador& otro)
+typename ColaMinPrior<T>::const_Iterador& ColaMinPrior<T>::const_Iterador::operator = (const typename ColaMinPrior<T>::const_Iterador& otro)
 {
-  lista_ = otro.lista_;
-  nodo_siguiente_ = otro.nodo_siguiente_;
+	_cola = otro._cola;
+	_nodo_siguiente = otro._nodo_siguiente;
 
   return *this;
 }
 
 template <typename T>
-bool Lista<T>::const_Iterador::HaySiguiente() const
+bool ColaMinPrior<T>::const_Iterador::HaySiguiente() const
 {
-  return nodo_siguiente_ != NULL;
+  return _nodo_siguiente != NULL;
 }
 
 template <typename T>
-bool Lista<T>::const_Iterador::HayAnterior() const
-{
-  return nodo_siguiente_ != lista_->primero_;
-}
-
-template <typename T>
-const T& Lista<T>::const_Iterador::Siguiente() const
+const T& ColaMinPrior<T>::const_Iterador::Siguiente() const
 {
   #ifdef DEBUG
   assert( HaySiguiente() );
   #endif
 
-  return nodo_siguiente_->dato;
-}
-
-template <typename T>
-const T& Lista<T>::const_Iterador::Anterior() const
-{
-  #ifdef DEBUG
-  assert(HayAnterior());
-  #endif
-
-  return SiguienteReal()->anterior->dato;
-}
-
-template <typename T>
-void Lista<T>::const_Iterador::Avanzar()
-{
-  #ifdef DEBUG
-  assert(HaySiguiente());
-  #endif
-
-  nodo_siguiente_ = nodo_siguiente_->siguiente;
-
-  if(nodo_siguiente_ == lista_->primero_) {
-    nodo_siguiente_ = NULL;
-  }
-}
-
-template <typename T>
-void Lista<T>::const_Iterador::Retroceder()
-{
-  #ifdef DEBUG
-  assert( HayAnterior() );
-  #endif
-
-  nodo_siguiente_ = SiguienteReal()->anterior;
+  return _nodo_siguiente->elem;
 }
 
 template<class T>
-bool Lista<T>::const_Iterador::operator == (const typename Lista<T>::const_Iterador& otro) const {
-  return lista_ == otro.lista_ && nodo_siguiente_ == otro.nodo_siguiente_;
+bool ColaMinPrior<T>::const_Iterador::operator == (const typename ColaMinPrior<T>::const_Iterador& otro) const {
+  return _cola == otro._cola && _nodo_siguiente == otro._nodo_siguiente;
 }
 
 template <typename T>
-Lista<T>::const_Iterador::const_Iterador(const Lista<T>* lista, const typename Lista<T>::Nodo* proximo)
-  : lista_(lista), nodo_siguiente_(proximo)
+ColaMinPrior<T>::const_Iterador::const_Iterador(const ColaMinPrior<T>* lista, const typename ColaMinPrior<T>::Nodo* proximo)
+  : _cola(lista), _nodo_siguiente(proximo)
 {}
-
-template <typename T>
-const typename Lista<T>::Nodo* Lista<T>::const_Iterador::SiguienteReal() const
-{
-  return nodo_siguiente_ == NULL ? lista_->primero_ : nodo_siguiente_;
-}
 
   // Otros
 
 template <typename T>
-std::ostream& operator<<(std::ostream& os, const Lista<T>& lista)
+std::ostream& operator<<(std::ostream& os, const ColaMinPrior<T>& lista)
 {
   return Mostrar(os, lista, '<', '>');
 }
-
-template <typename T>
-bool operator == (const Lista<T>& l1, const Lista<T>& l2)
-{
-  typename Lista<T>::const_Iterador it1 = l1.CrearIt();
-  typename Lista<T>::const_Iterador it2 = l2.CrearIt();
-
-  while(it1.HaySiguiente() && it2.HaySiguiente() && it1.Siguiente() == it2.Siguiente()) {
-    it1.Avanzar(); it2.Avanzar();
-  }
-
-  return !it1.HaySiguiente() && !it2.HaySiguiente();
-}
-
-}
-*/
 
 #endif // AED2_LISTA_H_INCLUDED
 

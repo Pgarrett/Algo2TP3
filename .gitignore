@@ -9,4 +9,5 @@ src/test/TestsDiccMat.o
 src/test/TestsDiccString.o
 src/test/TestsJuego.o
 src/test/TestsMapa.o
+src/test/TestsColaMinPrior.o
 src/tests.o

@@ -2,6 +2,8 @@
 #define SRC_JUEGO_H
 
 #include "Mapa.h"
+#include "ColaMinPrior.h"
+#include "../aed2/Vector.h"
 
 class Juego {
 
@@ -126,10 +128,17 @@ private:
                                                   itPosicion(Conj<Jugador>().CrearIt()) { }
     };
 
+    struct InfoVectorJugadores {
+        Conj<InfoJugador>::Iterador info;
+        ColaMinPrior<Jugador>::Iterador encolado;
+        InfoVectorJugadores(Conj<InfoJugador>::Iterador i, ColaMinPrior<Jugador>::Iterador e) : info(i), encolado(e) {}
+    };
+
     Mapa _mapa;
     Conj<InfoJugador> _jugadores;
     Conj<Jugador> _idsJugadores;
     Conj<Jugador> _expulsados;
+    Vector<InfoVectorJugadores> _jugadoresPorID;
 
 };
 
