@@ -32,9 +32,9 @@ Aliasing: Se agrega el elemento por copia
 #define AED2_COLAMINPRIOR_H_
 
 #include <ostream>
-#include "aed2/TiposBasicos.h"
-#include "aed2/Lista.h"
-#include "aed2/Arreglo.h"
+#include "../aed2/TiposBasicos.h"
+#include "../aed2/Lista.h"
+#include "../aed2/Arreglo.h"
 
 using namespace aed2;
 using namespace std;
