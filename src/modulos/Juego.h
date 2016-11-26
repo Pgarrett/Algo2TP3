@@ -36,13 +36,6 @@ public:
     /* Devuelve todas las coordenadas que posee el mapa del Juego. */
     const Mapa mapa() const;
 
-    /* Indica si hay un camino posible entre dos coordenadas
-    *  Requiere que las coordenadas existan en el mapa */
-    bool hayCamino(const Coordenada &c1, const Coordenada &c2) const;
-
-    /* Indica si una coordenada existe o no en el mapa */
-    bool posExistente(const Coordenada &c) const;
-
     /* Devuelve los jugadores que fueron insertados en el juego y no fueron eliminados. */
     Conj<Jugador> jugadores() const;
 

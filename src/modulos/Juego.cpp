@@ -42,3 +42,28 @@ bool Juego::hayPokemonCercano(const Coordenada &c) const {
 void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c) {
 
 }
+
+void Juego::conectarse(const Jugador &j, const Coordenada &c) {
+
+}
+
+void Juego::moverse(const Jugador &j, const Coordenada &c) {
+
+}
+
+Coordenada Juego::posicion(const Jugador &j) const {
+    return Coordenada(0, 0);
+}
+
+Nat Juego::cantPokemonsTotales() const {
+    return 0;
+}
+
+Nat Juego::cantMismaEspecie(const Pokemon &p) const {
+    return 0;
+}
+
+
+
+
+
