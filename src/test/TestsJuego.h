@@ -29,6 +29,13 @@ private:
 
     static void test_juego_jugador_nuevo_sin_pokemones();
 
+    static void test_juego_hay_pokemon_cercano_coordenada_invalida();
+
+    static void test_juego_hay_pokemon_cercano_coordenada_con_pokemon();
+
+    static void test_juego_hay_pokemon_cercano_coordenada_con_pokemon_cercano();
+
+    static void test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano();
 };
 
 

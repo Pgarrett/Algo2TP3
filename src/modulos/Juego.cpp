@@ -35,7 +35,10 @@ Conj<Jugador> Juego::jugadores() const {
     return _idsJugadores;
 }
 
+bool Juego::hayPokemonCercano(const Coordenada &c) const {
+    return false;
+}
 
+void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c) {
 
-
-
+}
