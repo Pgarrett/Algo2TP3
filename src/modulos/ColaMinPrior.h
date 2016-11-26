@@ -105,12 +105,9 @@ ColaMinPrior<T>::ColaMinPrior()
 
 template <typename T>
 ColaMinPrior<T>::~ColaMinPrior(){
-	cout << "Matando heap en ... ";
   	while(!EsVacia()) {
-  		cout << _tamano << " ";
     	Desencolar();
 	}
-	cout << _tamano << endl;
 }
 
 template <typename T>
