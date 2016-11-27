@@ -1,9 +1,18 @@
+/*
+ * Author: Fede
+ * Maintainer: tfischer
+ * 
+ * Conjunto (lineal) imlementado sobre Diccionario (Dicc.h),
+ * que está implementado sobre listas enlazadas (Lista.h).
+ * 
+ * Created on 30 de octubre de 2010
+ */
 
 #ifndef AED2_CONJ_H_INCLUDED
 #define	AED2_CONJ_H_INCLUDED
 
 #include <iostream>
-#include "Lista.h"
+#include "Dicc.h"
 
 namespace aed2
 {
@@ -60,9 +69,6 @@ class Conj
         bool HaySiguiente() const;
         bool HayAnterior() const;
 
-        T& Siguiente();
-        T& Anterior();
-
         const T& Siguiente() const;
         const T& Anterior() const;
 
@@ -74,11 +80,11 @@ class Conj
 
       private:
       
-        typename Lista<T>::Iterador _it_lst;
+        typename Dicc<T,bool>::Iterador it_dicc_;
 
         Iterador(Conj<T>& c);
 
-        Iterador(const typename Lista<T>::Iterador& itLst);
+        Iterador(const typename Dicc<T,bool>::Iterador& itDict);
 
         friend class Conj<T>::const_Iterador;
 
@@ -115,7 +121,7 @@ class Conj
 
       private:
 
-        typename Lista<T>::const_Iterador _it_lst;
+        typename Dicc<T,bool>::const_Iterador it_dicc_;
 
         const_Iterador(const Conj<T>& c);
 
@@ -125,7 +131,7 @@ class Conj
 
   private:
 
-    Lista<T> _lst;
+    Dicc<T,bool> dicc_;
 };
 
 template<class T>
@@ -142,59 +148,42 @@ Conj<T>::Conj()
 
 template<class T>
 Conj<T>::Conj(const Conj<T>& otro)
-  : _lst( otro._lst )
+  : dicc_( otro.dicc_ )
 {}
 
 template<class T>
 typename Conj<T>::Iterador Conj<T>::Agregar(const T& e){
-    return Iterador(_lst.AgregarAtras(e));
+    return Iterador(dicc_.Definir(e, true));
 }
 
 template<class T>
 typename Conj<T>::Iterador Conj<T>::AgregarRapido(const T& e){
-    return Iterador(_lst.AgregarAtras(e));
+    return Iterador(dicc_.DefinirRapido(e, true));
 }
 
 template<class T>
 void Conj<T>::Eliminar(const T& e){
-    typename Lista<T>::Iterador it = _lst.CrearIt();
-    bool eliminado = false;
-
-    while(it.HaySiguiente() && !eliminado){
-      if (it.Siguiente() == e){
-        it.EliminarSiguiente();
-        eliminado = true;
-      }
-      it.Avanzar();
-    }
+    if(Pertenece(e)) dicc_.Borrar(e);
 }
 
 template<class T>
 bool Conj<T>::EsVacio() const{
-    return _lst.Longitud()==0;
+    return dicc_.CantClaves()==0;
 }
 
 template<class T>
 bool Conj<T>::Pertenece(const T& e) const{
-    typename Lista<T>::const_Iterador it = _lst.CrearIt();
-    bool encontrado = false;
-
-    while(it.HaySiguiente() && !encontrado){
-      encontrado = (it.Siguiente() == e);
-      it.Avanzar();
-    }
-
-    return(encontrado);
+    return dicc_.Definido(e);
 }
 
 template<class T>
 Nat Conj<T>::Cardinal() const{
-    return _lst.Longitud();
+    return dicc_.CantClaves();
 }
 
 template<class T>
 bool Conj<T>::operator==(const Conj<T>& otro) const {
-    return _lst == otro._lst; //Esto no va a funcionar muy bien
+    return dicc_ == otro.dicc_;
 }
 
 template<class T>
@@ -211,12 +200,13 @@ typename Conj<T>::const_Iterador Conj<T>::CrearIt() const{
 
 template<class T>
 Conj<T>::Iterador::Iterador(const typename Conj<T>::Iterador& otra)
-  : _it_lst(otra._it_lst)
+  : it_dicc_(otra.it_dicc_)
 {}
 
 template<class T>
-typename Conj<T>::Iterador& Conj<T>::Iterador::operator = (const typename Conj<T>::Iterador& otra){
-  _it_lst = otra._it_lst;
+typename Conj<T>::Iterador& Conj<T>::Iterador::operator = (const typename Conj<T>::Iterador& otra)
+{
+  it_dicc_ = otra.it_dicc_;
   return *this;
 }
 
@@ -225,100 +215,91 @@ Conj<T>::Iterador::Iterador()
 {}
 
 template<class T>
-bool Conj<T>::Iterador::operator == (const typename Conj<T>::Iterador& otro) const{
-  return _it_lst == otro._it_lst;
+bool Conj<T>::Iterador::operator == (const typename Conj<T>::Iterador& otro) const
+{
+  return it_dicc_ == otro.it_dicc_;
 }
 
 template<class T>
-bool Conj<T>::Iterador::HaySiguiente() const{
-  return _it_lst.HaySiguiente();
+bool Conj<T>::Iterador::HaySiguiente() const
+{
+  return it_dicc_.HaySiguiente();
 }
 
 template<class T>
-bool Conj<T>::Iterador::HayAnterior() const{
-  return _it_lst.HayAnterior();
+bool Conj<T>::Iterador::HayAnterior() const
+{
+  return it_dicc_.HayAnterior();
 }
 
 template<class T>
-const T& Conj<T>::Iterador::Siguiente() const{
+const T& Conj<T>::Iterador::Siguiente() const
+{
   #ifdef DEBUG
   assert( HaySiguiente() );
   #endif
 
-  return _it_lst.Siguiente();
+  return it_dicc_.SiguienteClave();
 }
 
 template<class T>
-const T& Conj<T>::Iterador::Anterior() const{
+const T& Conj<T>::Iterador::Anterior() const
+{
   #ifdef DEBUG
   assert( HayAnterior() );
   #endif
 
-  return _it_lst.Anterior();
+  return it_dicc_.AnteriorClave();
 }
 
 template<class T>
-T& Conj<T>::Iterador::Siguiente(){
+void Conj<T>::Iterador::Avanzar()
+{
   #ifdef DEBUG
   assert( HaySiguiente() );
   #endif
 
-  return _it_lst.Siguiente();
+  it_dicc_.Avanzar();
 }
 
 template<class T>
-T& Conj<T>::Iterador::Anterior(){
+void Conj<T>::Iterador::Retroceder()
+{
   #ifdef DEBUG
   assert( HayAnterior() );
   #endif
 
-  return _it_lst.Anterior();
+  it_dicc_.Retroceder();
 }
 
 template<class T>
-void Conj<T>::Iterador::Avanzar(){
+void Conj<T>::Iterador::EliminarAnterior()
+{
+  #ifdef DEBUG
+  assert( HayAnterior() );
+  #endif
+
+  it_dicc_.EliminarAnterior();
+}
+
+template<class T>
+void Conj<T>::Iterador::EliminarSiguiente()
+{
   #ifdef DEBUG
   assert( HaySiguiente() );
   #endif
 
-  _it_lst.Avanzar();
-}
-
-template<class T>
-void Conj<T>::Iterador::Retroceder(){
-  #ifdef DEBUG
-  assert( HayAnterior() );
-  #endif
-
-  _it_lst.Retroceder();
-}
-
-template<class T>
-void Conj<T>::Iterador::EliminarAnterior(){
-  #ifdef DEBUG
-  assert( HayAnterior() );
-  #endif
-
-  _it_lst.EliminarAnterior();
-}
-
-template<class T>
-void Conj<T>::Iterador::EliminarSiguiente(){
-  #ifdef DEBUG
-  assert( HaySiguiente() );
-  #endif
-
-  _it_lst.EliminarSiguiente();
+  it_dicc_.EliminarSiguiente();
 }
 
 template<class T>
 Conj<T>::Iterador::Iterador(Conj<T>& c)
-  : _it_lst(c._lst.CrearIt())
+  : it_dicc_( c.dicc_.CrearIt() )
 {}
 
 template<class T>
-Conj<T>::Iterador::Iterador(const typename Lista<T>::Iterador& iter)
-  : _it_lst(iter)
+Conj<T>::Iterador::Iterador(const typename Dicc<T,bool>::Iterador& iter)
+  : it_dicc_(iter)
 {}
 
   // Implementacion const_Iterador
@@ -329,86 +310,96 @@ Conj<T>::const_Iterador::const_Iterador()
 
 template<class T>
 Conj<T>::const_Iterador::const_Iterador(const typename Conj<T>::Iterador& otra)
-  : _it_lst( otra._it_lst )
+  : it_dicc_( otra.it_dicc_ )
 {}
 
 template<class T>
 Conj<T>::const_Iterador::const_Iterador(const typename Conj<T>::const_Iterador& otra)
-  : _it_lst( otra._it_lst )
+  : it_dicc_( otra.it_dicc_ )
 {}
 
 template<class T>
-typename Conj<T>::const_Iterador& Conj<T>::const_Iterador::operator = (const typename Conj<T>::const_Iterador& otra){
-  _it_lst = otra._it_lst;
+typename Conj<T>::const_Iterador& Conj<T>::const_Iterador::operator = (const typename Conj<T>::const_Iterador& otra)
+{
+  it_dicc_ = otra.it_dicc_;
 
   return *this;
 }
 
 template<class T>
-bool Conj<T>::const_Iterador::operator == (const typename Conj<T>::const_Iterador& otro) const{
-  return _it_lst == otro._it_lst;
+bool Conj<T>::const_Iterador::operator == (const typename Conj<T>::const_Iterador& otro) const
+{
+  return it_dicc_ == otro.it_dicc_;
 }
 
 template<class T>
-bool Conj<T>::const_Iterador::HaySiguiente() const{
-  return _it_lst.HaySiguiente();
+bool Conj<T>::const_Iterador::HaySiguiente() const
+{
+  return it_dicc_.HaySiguiente();
 }
 
 template<class T>
-bool Conj<T>::const_Iterador::HayAnterior() const{
-  return _it_lst.HayAnterior();
+bool Conj<T>::const_Iterador::HayAnterior() const
+{
+  return it_dicc_.HayAnterior();
 }
 
 template<class T>
-const T& Conj<T>::const_Iterador::Siguiente() const{
+const T& Conj<T>::const_Iterador::Siguiente() const
+{
   #ifdef DEBUG
   assert( HaySiguiente() );
   #endif
 
-  return _it_lst.Siguiente();
+  return it_dicc_.SiguienteClave();
 }
 
 template<class T>
-const T& Conj<T>::const_Iterador::Anterior() const{
+const T& Conj<T>::const_Iterador::Anterior() const
+{
   #ifdef DEBUG
   assert( HayAnterior() );
   #endif
 
-  return _it_lst.Anterior();
+  return it_dicc_.AnteriorClave();
 }
 
 template<class T>
-void Conj<T>::const_Iterador::Avanzar(){
+void Conj<T>::const_Iterador::Avanzar()
+{
   #ifdef DEBUG
   assert( HaySiguiente() );
   #endif
 
-  _it_lst.Avanzar();
+  it_dicc_.Avanzar();
 }
 
 template<class T>
-void Conj<T>::const_Iterador::Retroceder(){
+void Conj<T>::const_Iterador::Retroceder()
+{
   #ifdef DEBUG
   assert( HayAnterior() );
   #endif
 
-  _it_lst.Retroceder();
+  it_dicc_.Retroceder();
 }
 
 template<class T>
 Conj<T>::const_Iterador::const_Iterador(const Conj<T>& c)
-  : _it_lst(c._lst.CrearIt())
+  : it_dicc_( c.dicc_.CrearIt() )
 {}
 
   // Otras implementaciones
 
 template<class T>
-bool operator==(const Conj<T>& c1, const Conj<T>& c2){
+bool operator==(const Conj<T>& c1, const Conj<T>& c2)
+{
   return c1.operator==(c2);
 }
 
 template<class T>
-std::ostream& operator<<(std::ostream& os, const Conj<T>& c){
+std::ostream& operator<<(std::ostream& os, const Conj<T>& c)
+{
   return Mostrar(os, c, '{', '}');
 }
 

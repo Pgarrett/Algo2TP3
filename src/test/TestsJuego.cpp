@@ -11,6 +11,7 @@ void TestsJuego::correr_tests() {
     RUN_TEST(test_juego_constructor_con_mapa);
     RUN_TEST(test_juego_crear_juego_sin_jugadores);
     RUN_TEST(test_juego_crear_juego_sin_expulsados);
+    RUN_TEST(test_juego_crear_juego_sin_posiciones_con_pokemons);
 
     // AgregarJugador
     RUN_TEST(test_juego_jugadores_con_id_secuencial);
@@ -64,14 +65,15 @@ void TestsJuego::test_juego_jugadores_con_id_secuencial() {
 
 void TestsJuego::test_juego_crear_juego_sin_expulsados() {
     Mapa mapa = crearMapaDefault();
-
     Juego j(mapa);
 
     ASSERT(j.expulsados().Cardinal() == 0);
 }
 
 void TestsJuego::test_juego_crear_juego_sin_posiciones_con_pokemons() {
-
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    ASSERT(j.posConPokemons().Cardinal() == 0);
 }
 
 void TestsJuego::test_juego_crear_juego_sin_posiciones_con_jugadores() {

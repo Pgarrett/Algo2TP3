@@ -47,7 +47,7 @@ void TestsMapa::test_mapa_coordenadas_repetidas() {
     mapa.agregarCoordenada(Coordenada(1, 1));
     mapa.agregarCoordenada(Coordenada(1, 1));
 
-    ASSERT_EQ(1, mapa.coordenadas().Cardinal())
+    ASSERT_EQ(mapa.coordenadas().Cardinal(), 1);
 }
 
 static Mapa crear_mapa_con(Coordenada c1, Coordenada c2, Coordenada c3) {
