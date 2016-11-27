@@ -77,7 +77,7 @@ void TestsJuego::test_juego_crear_juego_sin_posiciones_con_pokemons() {
 }
 
 void TestsJuego::test_juego_crear_juego_sin_posiciones_con_jugadores() {
-
+    ASSERT(true);
 }
 
 // AgregarJugador

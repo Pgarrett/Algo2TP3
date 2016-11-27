@@ -24,6 +24,8 @@ public:
 
     const T significado(const Coordenada &c) const;
 
+    T significado(const Coordenada &c);
+
     void borrar(const Coordenada &c);
 
 private:
@@ -95,6 +97,12 @@ void DiccMat<T>::definir(const Coordenada &c, const T t) {
 
 template<class T>
 const T DiccMat<T>::significado(const Coordenada &c) const {
+    assert(definido(c));
+    return _valores[aplanar(c)].valor;
+}
+
+template<class T>
+T DiccMat<T>::significado(const Coordenada &c){
     assert(definido(c));
     return _valores[aplanar(c)].valor;
 }

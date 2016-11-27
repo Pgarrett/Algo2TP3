@@ -2,9 +2,9 @@
 
 Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Conj<InfoJugador>()), _idsJugadores(Conj<Jugador>()),
                               _expulsados(Conj<Jugador>()), _jugadoresPorID(Vector<InfoVectorJugadores>()),
-                              _pokemones(DiccString<Nat>()), _todosLosPokemones(Conj<InfoPokemon>()),
+                              _pokemones(DiccString<Nat>()), _todosLosPokemones(Lista<InfoPokemon>()),
                               _posicionesPokemons(DiccMat<Conj<InfoPokemon>::Iterador>(m.ancho(), m.largo())),
-                              _posicionesJugadores(DiccMat<Conj<Jugador>*>(m.ancho(), m.largo())){};
+                              _posicionesJugadores(DiccMat<Lista<Jugador>*>(m.ancho(), m.largo())){};
 
 Juego::~Juego() {
 
@@ -16,7 +16,7 @@ const Mapa Juego::mapa() const {
 
 void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
     InfoPokemon infoP = InfoPokemon(p,c);
-    Conj<typename Juego::InfoPokemon>::Iterador itPokemon = _todosLosPokemones.AgregarRapido(infoP);
+    Lista<typename Juego::InfoPokemon>::Iterador itPokemon = _todosLosPokemones.AgregarAtras(infoP);
     Nat desdeLat = DamePos(c.latitud, 2);
     Nat desdeLong = DamePos(c.longitud, 2);
     while(desdeLat < (c.latitud + 2)){
@@ -24,12 +24,12 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
             Coordenada cIndex = Coordenada(desdeLat, desdeLong);
             if(DistEuclidea(cIndex, c) <= 4){
                 if(_posicionesJugadores.definido(cIndex)){
-                    Conj<Jugador>::Iterador itJugadores = (*_posicionesJugadores.significado(cIndex)).CrearIt();
+                    Lista<Jugador>::Iterador itJugadores = (*_posicionesJugadores.significado(cIndex)).CrearIt();
                     while(itJugadores.HaySiguiente()){
                         Jugador e = itJugadores.Siguiente();
                         InfoVectorJugadores tupJugId = _jugadoresPorID[e];
                         Nat cantPokemonesJug = tupJugId.info.Siguiente().pokemonesCapturados.Cardinal();
-                        ColaMinPrior<Conj<Jugador>::Iterador>::Iterador itCola = itPokemon.Siguiente().jugadoresEnRango.Encolar(cantPokemonesJug, itJugadores);
+                        ColaMinPrior<Lista<Jugador>::Iterador>::Iterador itCola = itPokemon.Siguiente().jugadoresEnRango.Encolar(cantPokemonesJug, itJugadores);
                         _jugadoresPorID[e].encolado = itCola;
                         itJugadores.Avanzar();
                     }
@@ -52,7 +52,7 @@ Jugador Juego::agregarJugador() {
     Jugador id = _jugadores.Cardinal() + _expulsados.Cardinal();
     Conj<Jugador>::Iterador itConjIds = _idsJugadores.AgregarRapido(id);
     Conj<InfoJugador>::Iterador itJ = _jugadores.AgregarRapido(InfoJugador(itConjIds));
-    _jugadoresPorID.AgregarAtras(InfoVectorJugadores(itJ, ColaMinPrior<Conj<Jugador>::Iterador>().CrearIt()));
+    _jugadoresPorID.AgregarAtras(InfoVectorJugadores(itJ, ColaMinPrior<Lista<Jugador>::Iterador>().CrearIt()));
     return id;
 }
 

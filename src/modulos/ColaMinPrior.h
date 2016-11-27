@@ -32,7 +32,6 @@ class ColaMinPrior{
 
   	void Desencolar();
   	Iterador Encolar(Nat prior, const T& elem);
-    Iterador Encolar(Nat prior, const T& elem) const;
 
   	//void EliminarSiguiente();
 

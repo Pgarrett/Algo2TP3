@@ -6,7 +6,7 @@
 #include "../aed2/Vector.h"
 #include "DiccMat.h"
 #include "diccString.h"
-#include "../aed2/Conj.h"
+#include "../aed2/Lista.h"
 
 class Juego {
 
@@ -107,11 +107,11 @@ private:
         Pokemon tipo;
         Coordenada posicion;
         Nat contador;
-        ColaMinPrior<Conj<Jugador>::Iterador> jugadoresEnRango;
+        ColaMinPrior<Lista<Jugador>::Iterador> jugadoresEnRango;
         bool salvaje;
 
         InfoPokemon(const Pokemon &p, const Coordenada &c) : tipo(p), posicion(c), contador(0),
-                                                             jugadoresEnRango(ColaMinPrior<Conj<Jugador>::Iterador>()),
+                                                             jugadoresEnRango(ColaMinPrior<Lista<Jugador>::Iterador>()),
                                                              salvaje(true){}
     };
 
@@ -129,8 +129,8 @@ private:
 
     struct InfoVectorJugadores {
         Conj<InfoJugador>::Iterador info;
-        ColaMinPrior<Conj<Jugador>::Iterador>::Iterador encolado;
-        InfoVectorJugadores(Conj<InfoJugador>::Iterador i, ColaMinPrior<Conj<Jugador>::Iterador>::Iterador e) : info(i), encolado(e) {}
+        ColaMinPrior<Lista<Jugador>::Iterador>::Iterador encolado;
+        InfoVectorJugadores(Conj<InfoJugador>::Iterador i, ColaMinPrior<Lista<Jugador>::Iterador>::Iterador e) : info(i), encolado(e) {}
     };
 
     Nat DamePos(const Nat p, const Nat step) const;
@@ -142,9 +142,9 @@ private:
     Conj<Jugador> _expulsados;
     Vector<InfoVectorJugadores> _jugadoresPorID;
     DiccString<Nat> _pokemones;
-    Conj<InfoPokemon> _todosLosPokemones;
+    Lista<InfoPokemon> _todosLosPokemones;
     DiccMat<Conj<InfoPokemon>::Iterador> _posicionesPokemons;
-    DiccMat<Conj<Jugador>*> _posicionesJugadores;
+    DiccMat<Lista<Jugador>*> _posicionesJugadores;
 
 };
 
