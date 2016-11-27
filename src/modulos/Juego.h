@@ -4,6 +4,7 @@
 #include "Mapa.h"
 #include "ColaMinPrior.h"
 #include "../aed2/Vector.h"
+#include "diccString.h"
 
 class Juego {
 
@@ -104,8 +105,7 @@ private:
         Pokemon tipo;
         Coordenada posicion;
         Nat contador;
-        // Necesito que este commiteado el modulo para seguir
-//        ColaPrior<Nat, Conj<Jugador>::Iterador> jugadoresEnRango;
+        ColaMinPrior<Conj<Jugador>::Iterador> jugadoresEnRango;
         bool salvaje;
     };
 
@@ -132,6 +132,10 @@ private:
     Conj<Jugador> _idsJugadores;
     Conj<Jugador> _expulsados;
     Vector<InfoVectorJugadores> _jugadoresPorID;
+    DiccString<Nat> _pokemones;
+    Conj<InfoPokemon> _todosLosPokemones;
+    DiccMat<Conj<InfoPokemon>::Iterador> _posicionesPokemons;
+    DiccMat<Conj<Jugador>*> _posicionesJugadores;
 
 };
 

@@ -1,6 +1,11 @@
 #include "Juego.h"
 
-Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Conj<InfoJugador>()), _idsJugadores(Conj<Jugador>()), _expulsados(Conj<Jugador>()), _jugadoresPorID(Vector<InfoVectorJugadores>()) {
+Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Conj<InfoJugador>()), _idsJugadores(Conj<Jugador>()),
+                              _expulsados(Conj<Jugador>()), _jugadoresPorID(Vector<InfoVectorJugadores>()),
+                              _pokemones(DiccString<Nat>()), _todosLosPokemones(Conj<InfoPokemon>()),
+                              _posicionesPokemons(DiccMat<Conj<InfoPokemon>::Iterador>(m.ancho(), m.largo())),
+                              _posicionesJugadores(DiccMat<Conj<Jugador>*>(m.ancho(), m.largo()))
+{
 }
 
 Juego::~Juego() {
@@ -12,7 +17,7 @@ const Mapa Juego::mapa() const {
 }
 
 Jugador Juego::agregarJugador() {
-    Jugador id =_jugadores.Cardinal() + _expulsados.Cardinal();
+    Jugador id = _jugadores.Cardinal() + _expulsados.Cardinal();
     Conj<Jugador>::Iterador itConjIds = _idsJugadores.AgregarRapido(id);
     Conj<InfoJugador>::Iterador itJ = _jugadores.AgregarRapido(InfoJugador(itConjIds));
     _jugadoresPorID.AgregarAtras(InfoVectorJugadores(itJ, ColaMinPrior<Jugador>().CrearIt()));
@@ -63,7 +68,6 @@ Nat Juego::cantMismaEspecie(const Pokemon &p) const {
     return 0;
 }
 
-
-
-
-
+Conj<Coordenada> Juego::posConPokemons() const {
+    return Conj<Coordenada>();
+}

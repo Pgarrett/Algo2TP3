@@ -18,6 +18,8 @@ private:
 
     static void test_juego_crear_juego_sin_posiciones_con_pokemons();
 
+    static void test_juego_crear_juego_sin_posiciones_con_jugadores();
+
     // AgregarJugador
     static void test_juego_jugadores_con_id_secuencial();
 
@@ -29,6 +31,20 @@ private:
 
     static void test_juego_jugador_nuevo_sin_pokemones();
 
+    // Conectarse
+    static void test_juego_conectarse_jugador_se_conecta();
+
+    static void test_juego_conectarse_jugador_se_agrega_a_posiciones_jugadores();
+
+    static void test_juego_conectarse_jugador_no_en_rango_pokemon_sigue_igual();
+
+    static void test_juego_conectarse_jugador_en_rango_pokemon_se_agrega_al_heap();
+
+    static void test_juego_conectarse_jugador_en_rango_pokemon_se_agrega_it_heap_a_jugadores_por_id();
+
+    static void test_juego_conectarse_jugador_en_rango_pokemon_resetea_contador_pokemon();
+
+    // HayPokemonCercano
     static void test_juego_hay_pokemon_cercano_coordenada_invalida();
 
     static void test_juego_hay_pokemon_cercano_coordenada_con_pokemon();
