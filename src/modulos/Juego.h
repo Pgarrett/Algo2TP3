@@ -4,7 +4,9 @@
 #include "Mapa.h"
 #include "ColaMinPrior.h"
 #include "../aed2/Vector.h"
+#include "DiccMat.h"
 #include "diccString.h"
+#include "../aed2/Conj.h"
 
 class Juego {
 
@@ -107,6 +109,10 @@ private:
         Nat contador;
         ColaMinPrior<Conj<Jugador>::Iterador> jugadoresEnRango;
         bool salvaje;
+
+        InfoPokemon(const Pokemon &p, const Coordenada &c) : tipo(p), posicion(c), contador(0),
+                                                             jugadoresEnRango(ColaMinPrior<Conj<Jugador>::Iterador>()),
+                                                             salvaje(true){}
     };
 
     struct InfoJugador {
@@ -123,9 +129,12 @@ private:
 
     struct InfoVectorJugadores {
         Conj<InfoJugador>::Iterador info;
-        ColaMinPrior<Jugador>::Iterador encolado;
-        InfoVectorJugadores(Conj<InfoJugador>::Iterador i, ColaMinPrior<Jugador>::Iterador e) : info(i), encolado(e) {}
+        ColaMinPrior<Conj<Jugador>::Iterador>::Iterador encolado;
+        InfoVectorJugadores(Conj<InfoJugador>::Iterador i, ColaMinPrior<Conj<Jugador>::Iterador>::Iterador e) : info(i), encolado(e) {}
     };
+
+    Nat DamePos(const Nat p, const Nat step) const;
+    Nat DistEuclidea(const Coordenada c1, const Coordenada c2) const;
 
     Mapa _mapa;
     Conj<InfoJugador> _jugadores;

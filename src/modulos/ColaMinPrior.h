@@ -27,14 +27,13 @@ class ColaMinPrior{
   	Nat Tamano() const;
 
   	/// Acceso al proximo (en O(1))
-  	/// Versiones modificables y no modificables
   	T& Proximo();
-  	const T& Proximo() const;
-
+ 
   	void Desencolar();
   	Iterador Encolar(Nat prior, const T& elem);
+    Iterador Encolar(Nat prior, const T& elem) const;
 
-  	Iterador EliminarSiguiente();
+  	//void EliminarSiguiente();
 
 	Iterador CrearIt();
 	/*
@@ -55,6 +54,7 @@ class ColaMinPrior{
 		const T& Siguiente() const;
 		void EliminarSiguiente();
 		//bool operator == (const typename ColaMinPrior<T>::Iterador& otro) const;
+        Iterador& operator= (const Iterador& otro);
   	private:
       	ColaMinPrior<T>* _cola;
       	typename ColaMinPrior<T>::Nodo* _nodo_siguiente;
@@ -499,5 +499,10 @@ void ColaMinPrior<T>::Iterador::EliminarSiguiente() {
 	_nodo_siguiente = NULL;
 }
 
-#endif //  AED2_COLAMINPRIOR_H_
+template <typename T>
+typename ColaMinPrior<T>::Iterador& ColaMinPrior<T>::Iterador::operator= (const typename ColaMinPrior<T>::Iterador& otro){
+	_cola = otro._cola;
+	_nodo_siguiente = otro._nodo_siguiente;
+}
 
+#endif //  AED2_COLAMINPRIOR_H_
