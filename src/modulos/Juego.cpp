@@ -35,9 +35,9 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
                     }
                 }
             }
-            ++desdeLat;
+            ++desdeLong;
         }
-        ++desdeLong;
+        ++desdeLat;
     }
     if (_pokemones.Definido(p)){
         Nat cViejo = _pokemones.Significado(p);
