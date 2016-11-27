@@ -28,7 +28,8 @@ class ColaMinPrior{
 
   	/// Acceso al proximo (en O(1))
   	T& Proximo();
- 
+    const T& Proximo() const;
+
   	void Desencolar();
   	Iterador Encolar(Nat prior, const T& elem);
     Iterador Encolar(Nat prior, const T& elem) const;

@@ -29,8 +29,8 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
                         Jugador e = itJugadores.Siguiente();
                         InfoVectorJugadores tupJugId = _jugadoresPorID[e];
                         Nat cantPokemonesJug = tupJugId.info.Siguiente().pokemonesCapturados.Cardinal();
-// comentado hasta que me contesten el mail los docentes. Hay un error en conjunto.h                       ColaMinPrior<Conj<Jugador>::Iterador>::Iterador itCola = itPokemon.Siguiente().jugadoresEnRango.Encolar(cantPokemonesJug, itJugadores);
- //                       _jugadoresPorID[e].encolado = itCola;
+                        ColaMinPrior<Conj<Jugador>::Iterador>::Iterador itCola = itPokemon.Siguiente().jugadoresEnRango.Encolar(cantPokemonesJug, itJugadores);
+                        _jugadoresPorID[e].encolado = itCola;
                         itJugadores.Avanzar();
                     }
                 }
