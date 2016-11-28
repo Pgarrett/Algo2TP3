@@ -7,7 +7,8 @@ Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Lista<InfoJugador>()), _idsJu
                               _posicionesJugadores(DiccMat<Lista<Jugador> *>(m.largo(), m.ancho())) { };
 
 Juego::~Juego() {
-    Conj<Coordenada>::const_Iterador it = _posicionesJugadores.coordenadas();
+    Conj<Coordenada> cs = _posicionesJugadores.coordenadas();
+    Conj<Coordenada>::const_Iterador it = cs.CrearIt();
     while (it.HaySiguiente()) {
         delete _posicionesJugadores.significado(it.Siguiente());
         it.Avanzar();
@@ -113,7 +114,7 @@ void Juego::conectarse(const Jugador &j, const Coordenada &c) {
 
 void Juego::AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, Juego::InfoJugador &j, Coordenada c) {
     if (not d.definido(c)) {
-        d.definir(c, new Lista<Jugador>);
+        d.definir(c, new Lista<Jugador>());
     }
     Lista<Jugador>& l = *(d.significado(c));
     j.itPosicion = l.AgregarAtras(j.id.Siguiente());
@@ -154,7 +155,7 @@ Nat Juego::cantMismaEspecie(const Pokemon &p) const {
 }
 
 Conj<Coordenada> Juego::posConPokemons() const {
-    return Conj<Coordenada>();
+    return _posicionesPokemons.coordenadas();
 }
 
 Nat Juego::DamePos(const Nat p, const Nat step) const{

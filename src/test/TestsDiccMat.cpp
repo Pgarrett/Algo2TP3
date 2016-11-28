@@ -28,7 +28,7 @@ void TestsDiccMat::correr_tests() {
 void TestsDiccMat::test_diccmat_crear() {
     DiccMat<Nat> d(1, 1);
 
-    ASSERT(!d.coordenadas().HaySiguiente())
+    ASSERT(d.coordenadas().EsVacio())
 }
 
 
@@ -94,7 +94,8 @@ void TestsDiccMat::test_diccmat_coordenadas() {
     d.definir(c1, 1);
     d.definir(c2, 2);
 
-    ItConj it = d.coordenadas();
+    Conj<Coordenada> cs = d.coordenadas();
+    ItConj it = cs.CrearIt();
 
     Coor clave1 = siguiente(it);
     Coor clave2 = siguiente(it);
@@ -113,7 +114,9 @@ void TestsDiccMat::test_diccmat_coordenadas_sin_repetir() {
     d.definir(c1, 1);
     d.definir(c1, 100);
 
-    ItConj it = d.coordenadas();
+    Conj<Coordenada> cs = d.coordenadas();
+    ItConj it = cs.CrearIt();
+
     Coor clave = siguiente(it);
     ASSERT(!it.HaySiguiente());
     ASSERT(clave == c1);
@@ -163,7 +166,9 @@ void TestsDiccMat::test_diccmat_coordenadas_borradas() {
 
     d.borrar(c_borrada);
 
-    ItConj it = d.coordenadas();
+    Conj<Coordenada> cs = d.coordenadas();
+    ItConj it = cs.CrearIt();
+
     Coor coordenada = siguiente(it);
     ASSERT(!it.HaySiguiente());
     ASSERT(coordenada == c_definida);

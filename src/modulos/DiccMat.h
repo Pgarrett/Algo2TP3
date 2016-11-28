@@ -12,7 +12,7 @@ public:
 
     ~DiccMat();
 
-    const Conj<Coordenada>::const_Iterador coordenadas() const;
+    const Conj<Coordenada> coordenadas() const;
 
     const Nat ancho() const;
 
@@ -53,7 +53,7 @@ private:
 };
 
 template<class T>
-DiccMat<T>::DiccMat(Nat largo, Nat ancho) : _largo(largo), _ancho(ancho) {
+DiccMat<T>::DiccMat(Nat largo, Nat ancho) : _largo(largo), _ancho(ancho), claves(Conj<Coordenada>()){
     assert(ancho > 0 && largo > 0);
     _valores = new Tupla[_ancho * _largo];
     for (unsigned int i = 0; i < _ancho * _largo; i++)
@@ -76,8 +76,8 @@ const Nat DiccMat<T>::largo() const {
 }
 
 template<class T>
-const Conj<Coordenada>::const_Iterador DiccMat<T>::coordenadas() const {
-    return claves.CrearIt();
+const Conj<Coordenada> DiccMat<T>::coordenadas() const {
+    return claves;
 }
 
 template<class T>
