@@ -269,3 +269,9 @@ Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
     }
     return res;
 }
+
+Pokemon Juego::pokemonEnPos(const Coordenada &c) const{
+    //assert(c pertenece a posConPokemones)
+
+    return _posicionesPokemons.significado(c).Siguiente().tipo;
+}

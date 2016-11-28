@@ -353,6 +353,6 @@ void TestsJuego::test_juego_agregar_pokemones(){
 
     ASSERT(j.cantMismaEspecie("JuanCarlos") == 1);
     ASSERT(j.cantMismaEspecie("escuartul") == 2);
-    //ASSERT(j.pokemonEnPos(Coor(22,22)) == "JuanCarlos")
+    ASSERT(j.pokemonEnPos(Coor(1,1)) == "JuanCarlos")
 }
 
