@@ -40,6 +40,15 @@ void TestsJuego::correr_tests() {
     RUN_TEST(test_juego_pos_pokemon_cercano_coordenada_con_pokemon);
     RUN_TEST(test_juego_pos_pokemon_cercano_coordenada_con_pokemon_cercano);
 
+    // desconectarse
+    RUN_TEST(test_juego_desconectarse_desconecta_al_jugador);
+    RUN_TEST(test_juego_desconectarse_borra_jugador_de_posiciones_jugadores);
+    RUN_TEST(test_juego_desconectarse_no_cambia_sanciones_del_jugador_sin_sanciones);
+
+    // cantPokemonsTotales
+    RUN_TEST(test_juego_cant_pokemones_totales_nuevo_juego_igual_a_cero);
+    RUN_TEST(test_juego_cant_pokemones_totales_agregando_pokemon_igual_a_uno);
+
 }
 
 Mapa crearMapaDefault() {
@@ -274,4 +283,48 @@ void TestsJuego::test_juego_pos_pokemon_cercano_coordenada_con_pokemon_cercano()
     j.agregarPokemon("poke", Coor(1, 2));
 
     ASSERT(j.posPokemonCercano(Coor(1, 1)) == Coor(1, 2));
+}
+
+void TestsJuego::test_juego_desconectarse_desconecta_al_jugador() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Jugador j1 = j.agregarJugador();
+    j.conectarse(j1, Coor(0,2));
+    j.desconectarse(j1);
+    ASSERT(!j.estaConectado(j1));
+}
+
+void TestsJuego::test_juego_desconectarse_borra_jugador_de_posiciones_jugadores() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Jugador j1 = j.agregarJugador();
+    j.conectarse(j1, Coor(0,2));
+    ASSERT(j.jugadoresEnPos(Coor(0,2)).Siguiente() == 0);
+    j.desconectarse(j1);
+    ASSERT(!j.jugadoresEnPos(Coor(0,2)).HaySiguiente());
+}
+
+void TestsJuego::test_juego_desconectarse_no_cambia_sanciones_del_jugador_sin_sanciones() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Jugador j1 = j.agregarJugador();
+    j.conectarse(j1, Coor(0,2));
+    ASSERT(j.sanciones(j1) == 0);
+    j.desconectarse(j1);
+    ASSERT(j.sanciones(j1) == 0);
+}
+
+// cantPokemonsTotales
+
+void TestsJuego::test_juego_cant_pokemones_totales_nuevo_juego_igual_a_cero() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    ASSERT(j.cantPokemonsTotales() == 0);
+}
+
+void TestsJuego::test_juego_cant_pokemones_totales_agregando_pokemon_igual_a_uno() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    j.agregarPokemon("pikachu", Coor(0,2));
+    ASSERT(j.cantPokemonsTotales() == 1);
 }

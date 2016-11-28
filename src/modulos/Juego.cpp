@@ -141,7 +141,7 @@ Coordenada Juego::posicion(const Jugador &j) const {
 }
 
 Nat Juego::cantPokemonsTotales() const {
-    return 0;
+    return _todosLosPokemones.Longitud();
 }
 
 Nat Juego::cantMismaEspecie(const Pokemon &p) const {
@@ -203,8 +203,19 @@ Conj<Jugador> Juego::entrenadoresPosibles(const Coordenada &c) const {
     return posibles;
 }
 
-void Juego::desconectarse(const Jugador &j) {
+Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const {
+    return _posicionesJugadores.significado(c)->CrearIt();
+}
 
+void Juego::desconectarse(const Jugador &j) {
+    InfoVectorJugadores ivf = _jugadoresPorID.operator[](j);
+    if (hayPokemonCercano(ivf.info.Siguiente().posicion)) {
+        ivf.encolado.EliminarSiguiente();
+    }
+    InfoJugador& infoJ = ivf.info.Siguiente();
+    infoJ.estaConectado = false;
+    infoJ.itPosicion.EliminarSiguiente();
+    infoJ.itPosicion = Lista<Jugador>().CrearIt();
 }
 
 Coordenada Juego::posPokemonCercano(const Coordenada &c) const {

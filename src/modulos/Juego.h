@@ -101,6 +101,9 @@ public:
     /* Indica cuantos pokemons de la especie de unPokemon hay en pokemons. */
     Nat cantMismaEspecie(const Pokemon &p) const;
 
+    /* SOLO PARA TEST */
+    Lista<Jugador>::const_Iterador jugadoresEnPos(const Coordenada &c) const;
+
 private:
 
     struct InfoPokemon {

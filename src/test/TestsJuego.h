@@ -57,6 +57,24 @@ private:
 
     static void test_juego_pos_pokemon_cercano_coordenada_con_pokemon_cercano();
 
+    static void test_juego_desconectarse_desconecta_al_jugador();
+
+    static void test_juego_desconectarse_no_cambia_sanciones_del_jugador_sin_sanciones();
+
+    static void test_juego_desconectarse_no_cambia_sanciones_del_jugador_sancionado(); // TODO cuando este listo moverse
+
+    static void test_juego_desconectarse_no_cambia_pokemons_del_jugador(); // TODO cuando tengamos definido que hacer con pokemones que devuelve el dicc<pokemon, nat>
+
+    static void test_juego_desconectarse_borra_jugador_de_posiciones_jugadores();
+
+    static void test_juego_cant_pokemones_totales_nuevo_juego_igual_a_cero();
+
+    static void test_juego_cant_pokemones_totales_agregando_pokemon_igual_a_uno();
+
+    static void test_juego_cant_pokemones_totales_jugador_atrapa_pokemon(); // TODO cuando este listo moverse
+
+    static void test_juego_cant_pokemones_totales_jugador_con_pokemons_es_eliminado(); // TODO cuando este listo moverse
+
 };
 
 
