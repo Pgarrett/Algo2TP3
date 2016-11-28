@@ -264,4 +264,37 @@ bool Juego::hayPokemonEnTerritorio(const Coordenada c){
     }
 
     return(res);
+
+Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const {
+    return _posicionesJugadores.significado(c)->CrearIt();
+}
+
+void Juego::desconectarse(const Jugador &j) {
+    InfoVectorJugadores ivf = _jugadoresPorID.operator[](j);
+    if (hayPokemonCercano(ivf.info.Siguiente().posicion)) {
+        ivf.encolado.EliminarSiguiente();
+    }
+    InfoJugador& infoJ = ivf.info.Siguiente();
+    infoJ.estaConectado = false;
+    infoJ.itPosicion.EliminarSiguiente();
+    infoJ.itPosicion = Lista<Jugador>().CrearIt();
+}
+
+Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
+    Coordenada res(0, 0);
+    Nat latC = c.latitud;
+    Nat i = DamePos(latC, 2);
+    Nat longC = c.longitud;
+    Nat j = DamePos(longC, 2);
+    while (i <= latC + 2) {
+        while (j <= longC + 2) {
+            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 4) {
+                res = Coordenada(i, j);
+            }
+            j++;
+        }
+        i++;
+        j = DamePos(longC, 2);
+    }
+    return res;
 }

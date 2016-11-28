@@ -49,9 +49,12 @@ void TestsJuego::correr_tests() {
     RUN_TEST(test_juego_cant_pokemones_totales_nuevo_juego_igual_a_cero);
     RUN_TEST(test_juego_cant_pokemones_totales_agregando_pokemon_igual_a_uno);
 
+<<<<<<< HEAD
 
     //AgregarPokemon
     RUN_TEST(test_juego_agregar_pokemones);
+=======
+>>>>>>> bf0d10d88dbbaa69d7f780af6a4697aff6f7b2f1
 }
 
 Mapa crearMapaDefault() {
@@ -191,6 +194,8 @@ void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon_cercano()
 
 void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano() {
     Mapa mapa = crearMapaDefault();
+<<<<<<< HEAD
+=======
     Juego j(mapa);
 
     j.agregarPokemon("poke", Coor(2, 2));
@@ -300,11 +305,161 @@ void TestsJuego::test_juego_pos_pokemon_cercano_coordenada_con_pokemon_cercano()
 
 void TestsJuego::test_juego_desconectarse_desconecta_al_jugador() {
     Mapa mapa = crearMapaDefault();
+>>>>>>> bf0d10d88dbbaa69d7f780af6a4697aff6f7b2f1
     Juego j(mapa);
     Jugador j1 = j.agregarJugador();
     j.conectarse(j1, Coor(0,2));
     j.desconectarse(j1);
     ASSERT(!j.estaConectado(j1));
+}
+
+<<<<<<< HEAD
+    j.agregarPokemon("poke", Coor(2, 2));
+
+    ASSERT(not j.hayPokemonCercano(Coor(0, 0)));
+}
+
+void TestsJuego::test_juego_conectarse_conecta_al_jugador() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Nat id = j.agregarJugador();
+
+    j.conectarse(id, Coor(0, 0));
+
+    ASSERT(j.estaConectado(id))
+}
+
+void TestsJuego::test_juego_conectarse_pone_al_jugador_en_posicion() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Nat id = j.agregarJugador();
+
+    j.conectarse(id, Coor(1, 2));
+
+    ASSERT(j.posicion(id) == Coor(1, 2))
+}
+
+void TestsJuego::test_juego_entrenadores_posibles_ningun_entrenador() {
+    Juego j(crearMapaDefault());
+    j.agregarJugador();
+    j.agregarPokemon("poke", Coor(0, 0));
+
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 0));
+
+    ASSERT(posibles.EsVacio())
+}
+
+// Un entrenador cerca del pokemon deberia ser un entrenador posible
+void TestsJuego::test_juego_entrenadores_posibles_entrenador_cercano() {
+    Juego j(crearMapaDefault());
+    Jugador jugador = j.agregarJugador();
+    j.agregarPokemon("poke", Coor(0, 2));
+    j.conectarse(jugador, Coor(1, 2));
+
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 2));
+
+    ASSERT(posibles.Cardinal() == 1)
+    ASSERT(posibles.Pertenece(jugador))
+}
+
+// Un entrenador lejos del pokemon no deberia ser un entrenador posible
+void TestsJuego::test_juego_entrenadores_posibles_entrenador_lejano() {
+    Juego j(crearMapaDefault());
+    Jugador jugador = j.agregarJugador();
+    j.agregarPokemon("poke", Coor(0, 0));
+    j.conectarse(jugador, Coor(10, 0));
+
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 0));
+
+    ASSERT(posibles.EsVacio())
+}
+
+// Un jugador que se desconecta no deberia ser un entrenador posible
+void TestsJuego::test_juego_entrenadores_posibles_jugador_se_desconecta() {
+    Juego j(crearMapaDefault());
+    Jugador jugador = j.agregarJugador();
+    j.agregarPokemon("poke", Coor(0, 2));
+    j.conectarse(jugador, Coor(1, 2));
+    j.desconectarse(jugador);
+
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 2));
+
+    ASSERT(posibles.EsVacio())
+}
+
+// Un jugador deberia ser un entrenador posible si un pokemon se agrega cerca de donde esta
+void TestsJuego::test_juego_entrenadores_posibles_pokemon_se_agrega_despues() {
+    Juego j(crearMapaDefault());
+    Jugador jugador = j.agregarJugador();
+    j.conectarse(jugador, Coor(1, 2));
+    j.agregarPokemon("poke", Coor(0, 2));
+
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 2));
+
+    ASSERT(posibles.Cardinal() == 1)
+    ASSERT(posibles.Pertenece(jugador))
+}
+
+
+void TestsJuego::test_juego_pos_pokemon_cercano_coordenada_con_pokemon() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+
+    j.agregarPokemon("poke", Coor(1, 2));
+
+    ASSERT(j.posPokemonCercano(Coor(1, 2)) == Coor(1, 2));
+}
+
+void TestsJuego::test_juego_pos_pokemon_cercano_coordenada_con_pokemon_cercano() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+
+    j.agregarPokemon("poke", Coor(1, 2));
+
+    ASSERT(j.posPokemonCercano(Coor(1, 1)) == Coor(1, 2));
+}
+
+void TestsJuego::test_juego_desconectarse_desconecta_al_jugador() {
+=======
+void TestsJuego::test_juego_desconectarse_borra_jugador_de_posiciones_jugadores() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Jugador j1 = j.agregarJugador();
+    j.conectarse(j1, Coor(0,2));
+    ASSERT(j.jugadoresEnPos(Coor(0,2)).Siguiente() == 0);
+    j.desconectarse(j1);
+    ASSERT(!j.jugadoresEnPos(Coor(0,2)).HaySiguiente());
+}
+
+void TestsJuego::test_juego_desconectarse_no_cambia_sanciones_del_jugador_sin_sanciones() {
+>>>>>>> bf0d10d88dbbaa69d7f780af6a4697aff6f7b2f1
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    Jugador j1 = j.agregarJugador();
+    j.conectarse(j1, Coor(0,2));
+<<<<<<< HEAD
+    j.desconectarse(j1);
+    ASSERT(!j.estaConectado(j1));
+=======
+    ASSERT(j.sanciones(j1) == 0);
+    j.desconectarse(j1);
+    ASSERT(j.sanciones(j1) == 0);
+}
+
+// cantPokemonsTotales
+
+void TestsJuego::test_juego_cant_pokemones_totales_nuevo_juego_igual_a_cero() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    ASSERT(j.cantPokemonsTotales() == 0);
+}
+
+void TestsJuego::test_juego_cant_pokemones_totales_agregando_pokemon_igual_a_uno() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+    j.agregarPokemon("pikachu", Coor(0,2));
+    ASSERT(j.cantPokemonsTotales() == 1);
+>>>>>>> bf0d10d88dbbaa69d7f780af6a4697aff6f7b2f1
 }
 
 void TestsJuego::test_juego_desconectarse_borra_jugador_de_posiciones_jugadores() {

@@ -14,11 +14,13 @@ private:
 
     static void test_moverse_sanciones_aumentan_en_movimiento_invalido();
 
-    static void test_moverse_sanciones_expulsar();
+    static void test_moverse_se_mueve_si_fue_movimiento_valido();
 
     static void test_moverse_no_se_mueve_si_fue_movimiento_invalido();
 
-    static void test_moverse_se_mueve_si_fue_movimiento_valido();
+    static void test_moverse_sanciones_expulsar();
+
+    static void test_moverse_jugador_expulsado_no_esta_en_jugadores();
 
     static void test_moverse_expulsar_cantidad_total_de_pokemones();
 //

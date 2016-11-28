@@ -16,6 +16,6 @@ int main(int argc, char **argv)
   TestsColaMinPrior::correr_tests();
   TestsMapa::correr_tests();
   TestsJuego::correr_tests();
-//  TestsMoverse::correr_tests();
+  TestsMoverse::correr_tests();
   return 0;
 }
