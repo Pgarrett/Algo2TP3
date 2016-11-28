@@ -21,9 +21,9 @@ void TestsJuego::correr_tests() {
 
     // Hay pokemons cercano
     RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_invalida);
-//    RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_con_pokemon);
-//    RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_con_pokemon_cercano);
-//    RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano);
+    RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_con_pokemon);
+    RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_con_pokemon_cercano);
+    RUN_TEST(test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano);
 }
 
 Mapa crearMapaDefault() {
@@ -134,28 +134,28 @@ void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_invalida() {
 }
 
 void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon() {
-    Mapa mapa;
+    Mapa mapa = crearMapaDefault();
     Juego j(mapa);
 
-    j.agregarPokemon("poke", Coor(1, 1));
+    j.agregarPokemon("poke", Coor(0, 0));
 
     ASSERT(j.hayPokemonCercano(Coor(1, 1)));
 }
 
 void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon_cercano() {
-    Mapa mapa;
+    Mapa mapa = crearMapaDefault();
     Juego j(mapa);
 
-    j.agregarPokemon("poke", Coor(1, 1));
+    j.agregarPokemon("poke", Coor(0, 0));
 
-    ASSERT(j.hayPokemonCercano(Coor(3, 1)));
+    ASSERT(j.hayPokemonCercano(Coor(1, 1)));
 }
 
 void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano() {
-    Mapa mapa;
+    Mapa mapa = crearMapaDefault();
     Juego j(mapa);
 
-    j.agregarPokemon("poke", Coor(1, 1));
+    j.agregarPokemon("poke", Coor(0, 0));
 
-    ASSERT(not j.hayPokemonCercano(Coor(4, 4)));
+    ASSERT(not j.hayPokemonCercano(Coor(2, 2)));
 }

@@ -3,7 +3,7 @@
 Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Conj<InfoJugador>()), _idsJugadores(Conj<Jugador>()),
                               _expulsados(Conj<Jugador>()), _jugadoresPorID(Vector<InfoVectorJugadores>()),
                               _pokemones(DiccString<Nat>()), _todosLosPokemones(Lista<InfoPokemon>()),
-                              _posicionesPokemons(DiccMat<Conj<InfoPokemon>::Iterador>(m.ancho(), m.largo())),
+                              _posicionesPokemons(DiccMat<Lista<InfoPokemon>::Iterador>(m.ancho(), m.largo())),
                               _posicionesJugadores(DiccMat<Lista<Jugador>*>(m.ancho(), m.largo())){};
 
 Juego::~Juego() {
@@ -17,6 +17,7 @@ const Mapa Juego::mapa() const {
 void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
     InfoPokemon infoP = InfoPokemon(p,c);
     Lista<typename Juego::InfoPokemon>::Iterador itPokemon = _todosLosPokemones.AgregarAtras(infoP);
+    _posicionesPokemons.definir(c, itPokemon);
     Nat desdeLat = DamePos(c.latitud, 2);
     Nat desdeLong = DamePos(c.longitud, 2);
     while(desdeLat < (c.latitud + 2)){
@@ -73,7 +74,21 @@ Conj<Jugador> Juego::jugadores() const {
 }
 
 bool Juego::hayPokemonCercano(const Coordenada &c) const {
-    return false;
+    bool res = false;
+    Nat latC = c.latitud;
+    Nat i = DamePos(latC, 2);
+    Nat longC = c.longitud;
+    Nat j = DamePos(longC, 2);
+    while (i <= latC + 2) {
+        while (j <= longC + 2){
+            if(_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 4){
+                res = true;
+            }
+            j++;
+        }
+        i++;
+    }
+    return res;
 }
 
 void Juego::conectarse(const Jugador &j, const Coordenada &c) {
@@ -123,5 +138,7 @@ Nat Juego::DistEuclidea(const Coordenada c1, const Coordenada c2) const{
     }
     return (rLa + rLo);
 }
+
+
 
 

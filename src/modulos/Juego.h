@@ -143,7 +143,7 @@ private:
     Vector<InfoVectorJugadores> _jugadoresPorID;
     DiccString<Nat> _pokemones;
     Lista<InfoPokemon> _todosLosPokemones;
-    DiccMat<Conj<InfoPokemon>::Iterador> _posicionesPokemons;
+    DiccMat<Lista<InfoPokemon>::Iterador> _posicionesPokemons;
     DiccMat<Lista<Jugador>*> _posicionesJugadores;
 
 };
