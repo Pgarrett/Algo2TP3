@@ -3,8 +3,8 @@
 Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Lista<InfoJugador>()), _idsJugadores(Conj<Jugador>()),
                               _expulsados(Conj<Jugador>()), _jugadoresPorID(Vector<InfoVectorJugadores>()),
                               _pokemones(DiccString<Nat>()), _todosLosPokemones(Lista<InfoPokemon>()),
-                              _posicionesPokemons(DiccMat<Lista<InfoPokemon>::Iterador>(m.ancho(), m.largo())),
-                              _posicionesJugadores(DiccMat<Lista<Jugador> *>(m.ancho(), m.largo())) { };
+                              _posicionesPokemons(DiccMat<Lista<InfoPokemon>::Iterador>(m.largo(), m.ancho())),
+                              _posicionesJugadores(DiccMat<Lista<Jugador> *>(m.largo(), m.ancho())) { };
 
 Juego::~Juego() {
     Conj<Coordenada>::const_Iterador it = _posicionesJugadores.coordenadas();

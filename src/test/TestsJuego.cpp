@@ -32,10 +32,10 @@ void TestsJuego::correr_tests() {
 
     // entrenadores posibles
     RUN_TEST(test_juego_entrenadores_posibles_ningun_entrenador)
-//    RUN_TEST(test_juego_entrenadores_posibles_entrenador_cercano)
-//    RUN_TEST(test_juego_entrenadores_posibles_entrenador_lejano)
+    RUN_TEST(test_juego_entrenadores_posibles_entrenador_cercano)
+    RUN_TEST(test_juego_entrenadores_posibles_entrenador_lejano)
 //    RUN_TEST(test_juego_entrenadores_posibles_jugador_se_desconecta)
-//    RUN_TEST(test_juego_entrenadores_posibles_pokemon_se_agrega_despues)
+    RUN_TEST(test_juego_entrenadores_posibles_pokemon_se_agrega_despues)
 
     // pos pokemon cercano
     RUN_TEST(test_juego_pos_pokemon_cercano_coordenada_con_pokemon);
@@ -214,10 +214,10 @@ void TestsJuego::test_juego_entrenadores_posibles_ningun_entrenador() {
 void TestsJuego::test_juego_entrenadores_posibles_entrenador_cercano() {
     Juego j(crearMapaDefault());
     Jugador jugador = j.agregarJugador();
-    j.agregarPokemon("poke", Coor(0, 0));
+    j.agregarPokemon("poke", Coor(0, 2));
     j.conectarse(jugador, Coor(1, 2));
 
-    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 0));
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 2));
 
     ASSERT(posibles.Cardinal() == 1)
     ASSERT(posibles.Pertenece(jugador))
@@ -239,11 +239,11 @@ void TestsJuego::test_juego_entrenadores_posibles_entrenador_lejano() {
 void TestsJuego::test_juego_entrenadores_posibles_jugador_se_desconecta() {
     Juego j(crearMapaDefault());
     Jugador jugador = j.agregarJugador();
-    j.agregarPokemon("poke", Coor(0, 0));
-    j.conectarse(jugador, Coor(10, 0));
+    j.agregarPokemon("poke", Coor(0, 2));
+    j.conectarse(jugador, Coor(1, 2));
     j.desconectarse(jugador);
 
-    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 0));
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 2));
 
     ASSERT(posibles.EsVacio())
 }
@@ -253,9 +253,9 @@ void TestsJuego::test_juego_entrenadores_posibles_pokemon_se_agrega_despues() {
     Juego j(crearMapaDefault());
     Jugador jugador = j.agregarJugador();
     j.conectarse(jugador, Coor(1, 2));
-    j.agregarPokemon("poke", Coor(0, 0));
+    j.agregarPokemon("poke", Coor(0, 2));
 
-    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 0));
+    Conj<Jugador> posibles = j.entrenadoresPosibles(Coor(0, 2));
 
     ASSERT(posibles.Cardinal() == 1)
     ASSERT(posibles.Pertenece(jugador))
