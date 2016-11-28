@@ -1,13 +1,17 @@
 #include "Juego.h"
 
-Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Conj<InfoJugador>()), _idsJugadores(Conj<Jugador>()),
+Juego::Juego(const Mapa &m) : _mapa(m), _jugadores(Lista<InfoJugador>()), _idsJugadores(Conj<Jugador>()),
                               _expulsados(Conj<Jugador>()), _jugadoresPorID(Vector<InfoVectorJugadores>()),
                               _pokemones(DiccString<Nat>()), _todosLosPokemones(Lista<InfoPokemon>()),
                               _posicionesPokemons(DiccMat<Lista<InfoPokemon>::Iterador>(m.ancho(), m.largo())),
-                              _posicionesJugadores(DiccMat<Lista<Jugador>*>(m.ancho(), m.largo())){};
+                              _posicionesJugadores(DiccMat<Lista<Jugador> *>(m.ancho(), m.largo())) { };
 
 Juego::~Juego() {
-
+    Conj<Coordenada>::const_Iterador it = _posicionesJugadores.coordenadas();
+    while (it.HaySiguiente()) {
+        delete _posicionesJugadores.significado(it.Siguiente());
+        it.Avanzar();
+    }
 }
 
 const Mapa Juego::mapa() const {
@@ -50,9 +54,9 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
 }
 
 Jugador Juego::agregarJugador() {
-    Jugador id = _jugadores.Cardinal() + _expulsados.Cardinal();
+    Jugador id = _jugadores.Longitud() + _expulsados.Cardinal();
     Conj<Jugador>::Iterador itConjIds = _idsJugadores.AgregarRapido(id);
-    Conj<InfoJugador>::Iterador itJ = _jugadores.AgregarRapido(InfoJugador(itConjIds));
+    Lista<InfoJugador>::Iterador itJ = _jugadores.AgregarAtras(InfoJugador(itConjIds));
     _jugadoresPorID.AgregarAtras(InfoVectorJugadores(itJ, ColaMinPrior<Lista<Jugador>::Iterador>().CrearIt()));
     return id;
 }
@@ -62,11 +66,11 @@ Conj<Jugador> Juego::expulsados() const {
 }
 
 bool Juego::estaConectado(const Jugador &j) const {
-    return _jugadoresPorID.operator[](j).info.Siguiente().estaConectado;
+    return _jugadoresPorID[j].info.Siguiente().estaConectado;
 }
 
 Nat Juego::sanciones(const Jugador &j) const {
-    return _jugadoresPorID.operator[](j).info.Siguiente().sanciones;
+    return _jugadoresPorID[j].info.Siguiente().sanciones;
 }
 
 Conj<Jugador> Juego::jugadores() const {
@@ -79,36 +83,54 @@ bool Juego::hayPokemonCercano(const Coordenada &c) const {
     Nat i = DamePos(latC, 2);
     Nat longC = c.longitud;
     Nat j = DamePos(longC, 2);
-    while (i <= latC + 2) {
+    while (i <= latC + 2){
         while (j <= longC + 2){
-            if(_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 4){
+            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 4){
                 res = true;
             }
             j++;
         }
         i++;
+        j = DamePos(longC, 2);
     }
     return res;
 }
 
 void Juego::conectarse(const Jugador &j, const Coordenada &c) {
-    InfoVectorJugadores t = _jugadoresPorID[j];
-    InfoJugador infoJ = t.info.Siguiente();
+    Lista<InfoJugador>::Iterador &itJug = _jugadoresPorID[j].info;
+    InfoJugador &infoJ = itJug.Siguiente();
+    infoJ.estaConectado = true;
+    AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
+    if (hayPokemonCercano(c)) {
+        InfoPokemon &p = _posicionesPokemons.significado(posPokemonCercano(c)).Siguiente();
+        const ColaMinPrior<Lista<Jugador>::Iterador>::Iterador &iterador = p.jugadoresEnRango.Encolar(infoJ.pokemonesCapturados.Cardinal(), infoJ.itPosicion);
+        _jugadoresPorID[j].encolado = iterador;
+        p.contador = 0;
+    }
+}
+
+void Juego::AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, Juego::InfoJugador &j, Coordenada c) {
+    if (not d.definido(c)) {
+        d.definir(c, new Lista<Jugador>);
+    }
+    Lista<Jugador> l = *(d.significado(c));
+    j.itPosicion = l.AgregarAtras(j.id.Siguiente());
+    j.posicion = c;
 }
 
 void Juego::moverse(const Jugador &id, const Coordenada &c) {
     InfoVectorJugadores t = _jugadoresPorID[id];
     InfoJugador infoJ = t.info.Siguiente();
 
-    if(debeSancionarse(id, c)) {
-        if(infoJ.sanciones < 4){
+    if (debeSancionarse(id, c)){
+        if (infoJ.sanciones < 4){
             infoJ.sanciones++;
         }
     }
 }
 
 Coordenada Juego::posicion(const Jugador &j) const {
-    return Coordenada(0, 0);
+    return _jugadoresPorID[j].info.Siguiente().posicion;
 }
 
 Nat Juego::cantPokemonsTotales() const {
@@ -151,4 +173,48 @@ bool Juego::debeSancionarse(const Jugador j, const Coordenada c) const {
     InfoVectorJugadores t = _jugadoresPorID[j];
     InfoJugador infoJ = t.info.Siguiente();
     return !_mapa.hayCamino(infoJ.posicion, c) || DistEuclidea(infoJ.posicion, c);
+}
+
+Conj<Jugador> Juego::entrenadoresPosibles(const Coordenada &c) const {
+    Conj<Jugador> posibles;
+    Conj<Jugador>::const_Iterador it = _idsJugadores.CrearIt();
+    while (it.HaySiguiente()){
+        Jugador idJugador = it.Siguiente();
+        InfoJugador infoJ = _jugadoresPorID[idJugador].info.Siguiente();
+        if (infoJ.estaConectado){
+            Coordenada posJugador = infoJ.posicion;
+            if(hayPokemonCercano(posJugador)){
+                if (posPokemonCercano(posJugador) == c){
+                    if (_mapa.hayCamino(c, posJugador)){
+                        posibles.AgregarRapido(idJugador);
+                    }
+                }
+            }
+        }
+        it.Avanzar();
+    }
+    return posibles;
+}
+
+void Juego::desconectarse(const Jugador &j) {
+
+}
+
+Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
+    Coordenada res(0, 0);
+    Nat latC = c.latitud;
+    Nat i = DamePos(latC, 2);
+    Nat longC = c.longitud;
+    Nat j = DamePos(longC, 2);
+    while (i <= latC + 2) {
+        while (j <= longC + 2) {
+            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 4) {
+                res = Coordenada(i, j);
+            }
+            j++;
+        }
+        i++;
+        j = DamePos(longC, 2);
+    }
+    return res;
 }

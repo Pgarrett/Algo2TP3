@@ -38,6 +38,27 @@ private:
     static void test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano();
 
     static void test_juego_crear_juego_sin_posiciones_con_jugadores();
+
+    static void test_juego_conectarse_conecta_al_jugador();
+
+    static void test_juego_conectarse_pone_al_jugador_en_posicion();
+
+    static void test_juego_conectarse_agrega_a_entrenadores_posibles();
+
+    static void test_juego_entrenadores_posibles_ningun_entrenador();
+
+    static void test_juego_entrenadores_posibles_entrenador_cercano();
+
+    static void test_juego_entrenadores_posibles_entrenador_lejano();
+
+    static void test_juego_entrenadores_posibles_jugador_se_desconecta();
+
+    static void test_juego_entrenadores_posibles_pokemon_se_agrega_despues();
+
+    static void test_juego_pos_pokemon_cercano_coordenada_con_pokemon();
+
+    static void test_juego_pos_pokemon_cercano_coordenada_con_pokemon_cercano();
+
 };
 
 
