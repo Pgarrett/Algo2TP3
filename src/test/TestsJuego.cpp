@@ -189,12 +189,12 @@ void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon_cercano()
 }
 
 void TestsJuego::test_juego_hay_pokemon_cercano_coordenada_con_pokemon_lejano() {
-    Mapa mapa = crearMapaDefault();
+    Mapa mapa = crearMapaDefault_2();
     Juego j(mapa);
 
-    j.agregarPokemon("poke", Coor(2, 2));
+    j.agregarPokemon("poke", Coor(0, 1));
 
-    ASSERT(not j.hayPokemonCercano(Coor(0, 0)));
+    ASSERT(not j.hayPokemonCercano(Coor(9, 10)));
 }
 
 void TestsJuego::test_juego_conectarse_conecta_al_jugador() {
@@ -347,12 +347,10 @@ void TestsJuego::test_juego_agregar_pokemones(){
     Mapa mapa = crearMapaDefault_2();
     Juego j(mapa);
 
-    j.agregarPokemon("poke", Coor(1, 1));
-    j.agregarPokemon("JuanCarlos", Coor(9, 22));
+    j.agregarPokemon("JuanCarlos", Coor(1, 1));
     j.agregarPokemon("escuartul", Coor(5, 10));
     j.agregarPokemon("escuartul", Coor(7, 21));
 
-    ASSERT(j.cantMismaEspecie("poke") == 1);
     ASSERT(j.cantMismaEspecie("JuanCarlos") == 1);
     ASSERT(j.cantMismaEspecie("escuartul") == 2);
     //ASSERT(j.pokemonEnPos(Coor(22,22)) == "JuanCarlos")

@@ -214,7 +214,6 @@ Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const 
 
 bool Juego::puedoAgregarPokemon(const Coordenada c){
     return (_mapa.posExistente(c) && (!_posicionesPokemons.definido(c)) && !hayPokemonEnTerritorio(c));
-
 }
 
 bool Juego::hayPokemonEnTerritorio(const Coordenada c) {
@@ -231,6 +230,7 @@ bool Juego::hayPokemonEnTerritorio(const Coordenada c) {
             ++j;
         }
         ++i;
+        j = DamePos(longC, 5);
     }
 
     return (res);
