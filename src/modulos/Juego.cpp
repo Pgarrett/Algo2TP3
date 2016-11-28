@@ -19,7 +19,7 @@ const Mapa Juego::mapa() const {
 }
 
 void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
-    //assert(puedoAgregarPokemon(p,c));
+    assert(puedoAgregarPokemon(c));
 
     InfoPokemon infoP = InfoPokemon(p,c);
     Lista<typename Juego::InfoPokemon>::Iterador itPokemon = _todosLosPokemones.AgregarAtras(infoP);
@@ -49,7 +49,7 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
     if (_pokemones.Definido(p)){
         Nat cViejo = _pokemones.Significado(p);
         _pokemones.Borrar(p);
-        _pokemones.Definir(p, cViejo);
+        _pokemones.Definir(p, cViejo + 1);
     }else{
         _pokemones.Definir(p, 1);
     }
@@ -143,11 +143,14 @@ Coordenada Juego::posicion(const Jugador &j) const {
 }
 
 Nat Juego::cantPokemonsTotales() const {
-    return 0;
+    return _todosLosPokemones.Longitud();
 }
 
 Nat Juego::cantMismaEspecie(const Pokemon &p) const {
-    return 0;
+    if(_pokemones.Definido(p))
+        return _pokemones.Significado(p);
+    else
+        return 0;
 }
 
 Conj<Coordenada> Juego::posConPokemons() const {
@@ -205,8 +208,19 @@ Conj<Jugador> Juego::entrenadoresPosibles(const Coordenada &c) const {
     return posibles;
 }
 
-void Juego::desconectarse(const Jugador &j) {
+Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const {
+    return _posicionesJugadores.significado(c)->CrearIt();
+}
 
+void Juego::desconectarse(const Jugador &j) {
+    InfoVectorJugadores ivf = _jugadoresPorID.operator[](j);
+    if (hayPokemonCercano(ivf.info.Siguiente().posicion)) {
+        ivf.encolado.EliminarSiguiente();
+    }
+    InfoJugador& infoJ = ivf.info.Siguiente();
+    infoJ.estaConectado = false;
+    infoJ.itPosicion.EliminarSiguiente();
+    infoJ.itPosicion = Lista<Jugador>().CrearIt();
 }
 
 Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
@@ -226,4 +240,28 @@ Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
         j = DamePos(longC, 2);
     }
     return res;
+}
+
+bool Juego::puedoAgregarPokemon(const Coordenada c){
+    return (_mapa.posExistente(c) && (!_posicionesPokemons.definido(c)) && !hayPokemonEnTerritorio(c));
+
+}
+
+bool Juego::hayPokemonEnTerritorio(const Coordenada c){
+    bool res = false;
+    Nat latC = c.latitud;
+    Nat i = DamePos(latC, 5);
+    Nat longC = c.longitud;
+    Nat j = DamePos(longC, 5);
+    while(i <= (latC + 5)){
+        while(j <= (longC + 5)){
+            if (_posicionesPokemons.definido(Coordenada(i,j)) && DistEuclidea(c, Coordenada(i,j))){
+                res = true;
+            }
+            ++j;
+        }
+        ++i;
+    }
+
+    return(res);
 }

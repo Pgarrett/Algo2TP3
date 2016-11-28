@@ -101,6 +101,9 @@ public:
     /* Indica cuantos pokemons de la especie de unPokemon hay en pokemons. */
     Nat cantMismaEspecie(const Pokemon &p) const;
 
+    /* SOLO PARA TEST */
+    Lista<Jugador>::const_Iterador jugadoresEnPos(const Coordenada &c) const;
+
 private:
 
     struct InfoPokemon {
@@ -137,6 +140,8 @@ private:
     Nat DistEuclidea(const Coordenada c1, const Coordenada c2) const;
     bool debeSancionarse(const Jugador j, const Coordenada c) const;
     void AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, InfoJugador &j, Coordenada c);
+    bool puedoAgregarPokemon(const Coordenada c);
+    bool hayPokemonEnTerritorio(const Coordenada c);
 
     Mapa _mapa;
     Lista<InfoJugador> _jugadores;
