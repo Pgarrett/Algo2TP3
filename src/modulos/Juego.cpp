@@ -92,11 +92,19 @@ bool Juego::hayPokemonCercano(const Coordenada &c) const {
 }
 
 void Juego::conectarse(const Jugador &j, const Coordenada &c) {
-
+    InfoVectorJugadores t = _jugadoresPorID[j];
+    InfoJugador infoJ = t.info.Siguiente();
 }
 
-void Juego::moverse(const Jugador &j, const Coordenada &c) {
+void Juego::moverse(const Jugador &id, const Coordenada &c) {
+    InfoVectorJugadores t = _jugadoresPorID[id];
+    InfoJugador infoJ = t.info.Siguiente();
 
+    if(debeSancionarse(id, c)) {
+        if(infoJ.sanciones < 4){
+            infoJ.sanciones++;
+        }
+    }
 }
 
 Coordenada Juego::posicion(const Jugador &j) const {
@@ -139,6 +147,8 @@ Nat Juego::DistEuclidea(const Coordenada c1, const Coordenada c2) const{
     return (rLa + rLo);
 }
 
-
-
-
+bool Juego::debeSancionarse(const Jugador j, const Coordenada c) const {
+    InfoVectorJugadores t = _jugadoresPorID[j];
+    InfoJugador infoJ = t.info.Siguiente();
+    return !_mapa.hayCamino(infoJ.posicion, c) || DistEuclidea(infoJ.posicion, c);
+}

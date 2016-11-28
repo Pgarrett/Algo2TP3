@@ -34,7 +34,7 @@ public:
     /* Al jugador pasado por parametro, lo intenta mover hacia la coordenada indicada.
      * Requiere que el jugador este en el juego conectado y
      * que la Coordenada pasada este en el mapa. */
-    void moverse(const Jugador &j, const Coordenada &c);
+    void moverse(const Jugador &id, const Coordenada &c);
 
     /* Devuelve todas las coordenadas que posee el mapa del Juego. */
     const Mapa mapa() const;
@@ -135,6 +135,7 @@ private:
 
     Nat DamePos(const Nat p, const Nat step) const;
     Nat DistEuclidea(const Coordenada c1, const Coordenada c2) const;
+    bool debeSancionarse(const Jugador j, const Coordenada c) const;
 
     Mapa _mapa;
     Conj<InfoJugador> _jugadores;
