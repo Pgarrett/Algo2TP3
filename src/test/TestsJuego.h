@@ -75,12 +75,9 @@ private:
 
     static void test_juego_cant_pokemones_totales_jugador_con_pokemons_es_eliminado(); // TODO cuando este listo moverse
 
-<<<<<<< HEAD
     //AgregarPokemon
 
     static void test_juego_agregar_pokemones();
-=======
->>>>>>> bf0d10d88dbbaa69d7f780af6a4697aff6f7b2f1
 };
 
 

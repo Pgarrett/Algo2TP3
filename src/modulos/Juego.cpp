@@ -207,55 +207,25 @@ Conj<Jugador> Juego::entrenadoresPosibles(const Coordenada &c) const {
     }
     return posibles;
 }
-
+/*
 Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const {
     return _posicionesJugadores.significado(c)->CrearIt();
-}
-
-void Juego::desconectarse(const Jugador &j) {
-    InfoVectorJugadores ivf = _jugadoresPorID.operator[](j);
-    if (hayPokemonCercano(ivf.info.Siguiente().posicion)) {
-        ivf.encolado.EliminarSiguiente();
-    }
-    InfoJugador& infoJ = ivf.info.Siguiente();
-    infoJ.estaConectado = false;
-    infoJ.itPosicion.EliminarSiguiente();
-    infoJ.itPosicion = Lista<Jugador>().CrearIt();
-}
-
-Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
-    Coordenada res(0, 0);
-    Nat latC = c.latitud;
-    Nat i = DamePos(latC, 2);
-    Nat longC = c.longitud;
-    Nat j = DamePos(longC, 2);
-    while (i <= latC + 2) {
-        while (j <= longC + 2) {
-            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 4) {
-                res = Coordenada(i, j);
-            }
-            j++;
-        }
-        i++;
-        j = DamePos(longC, 2);
-    }
-    return res;
-}
+}*/
 
 bool Juego::puedoAgregarPokemon(const Coordenada c){
     return (_mapa.posExistente(c) && (!_posicionesPokemons.definido(c)) && !hayPokemonEnTerritorio(c));
 
 }
 
-bool Juego::hayPokemonEnTerritorio(const Coordenada c){
+bool Juego::hayPokemonEnTerritorio(const Coordenada c) {
     bool res = false;
     Nat latC = c.latitud;
     Nat i = DamePos(latC, 5);
     Nat longC = c.longitud;
     Nat j = DamePos(longC, 5);
-    while(i <= (latC + 5)){
-        while(j <= (longC + 5)){
-            if (_posicionesPokemons.definido(Coordenada(i,j)) && DistEuclidea(c, Coordenada(i,j))){
+    while (i <= (latC + 5)) {
+        while (j <= (longC + 5)) {
+            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j))) {
                 res = true;
             }
             ++j;
@@ -263,7 +233,8 @@ bool Juego::hayPokemonEnTerritorio(const Coordenada c){
         ++i;
     }
 
-    return(res);
+    return (res);
+}
 
 Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const {
     return _posicionesJugadores.significado(c)->CrearIt();
