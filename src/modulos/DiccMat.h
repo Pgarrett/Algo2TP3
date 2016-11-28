@@ -8,7 +8,7 @@ template<class T>
 class DiccMat {
 
 public:
-    DiccMat(Nat ancho, Nat largo);
+    DiccMat(Nat largo, Nat ancho);
 
     ~DiccMat();
 
@@ -82,7 +82,9 @@ const Conj<Coordenada>::const_Iterador DiccMat<T>::coordenadas() const {
 
 template<class T>
 const bool DiccMat<T>::definido(const Coordenada &c) const {
-    assert(enRango(c));
+    if(!enRango(c)){
+        return false;
+    }
     return _valores[aplanar(c)].usado;
 }
 

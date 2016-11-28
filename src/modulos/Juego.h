@@ -34,7 +34,7 @@ public:
     /* Al jugador pasado por parametro, lo intenta mover hacia la coordenada indicada.
      * Requiere que el jugador este en el juego conectado y
      * que la Coordenada pasada este en el mapa. */
-    void moverse(const Jugador &j, const Coordenada &c);
+    void moverse(const Jugador &id, const Coordenada &c);
 
     /* Devuelve todas las coordenadas que posee el mapa del Juego. */
     const Mapa mapa() const;
@@ -121,29 +121,31 @@ private:
         Nat sanciones;
         Conj<Conj<InfoPokemon>::Iterador> pokemonesCapturados;
         Coordenada posicion;
-        Conj<Jugador>::Iterador itPosicion;
+        Lista<Jugador>::Iterador itPosicion;
         InfoJugador(Conj<Jugador>::Iterador ID) : id(ID), estaConectado(false), sanciones(0),
                                                   pokemonesCapturados(Conj<Conj<InfoPokemon>::Iterador>()), posicion(Coordenada(0, 0)),
-                                                  itPosicion(Conj<Jugador>().CrearIt()) { }
+                                                  itPosicion(Lista<Jugador>().CrearIt()) { }
     };
 
     struct InfoVectorJugadores {
-        Conj<InfoJugador>::Iterador info;
+        Lista<InfoJugador>::Iterador info;
         ColaMinPrior<Lista<Jugador>::Iterador>::Iterador encolado;
-        InfoVectorJugadores(Conj<InfoJugador>::Iterador i, ColaMinPrior<Lista<Jugador>::Iterador>::Iterador e) : info(i), encolado(e) {}
+        InfoVectorJugadores(Lista<InfoJugador>::Iterador i, ColaMinPrior<Lista<Jugador>::Iterador>::Iterador e) : info(i), encolado(e) {}
     };
 
     Nat DamePos(const Nat p, const Nat step) const;
     Nat DistEuclidea(const Coordenada c1, const Coordenada c2) const;
+    bool debeSancionarse(const Jugador j, const Coordenada c) const;
+    void AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, InfoJugador &j, Coordenada c);
 
     Mapa _mapa;
-    Conj<InfoJugador> _jugadores;
+    Lista<InfoJugador> _jugadores;
     Conj<Jugador> _idsJugadores;
     Conj<Jugador> _expulsados;
     Vector<InfoVectorJugadores> _jugadoresPorID;
     DiccString<Nat> _pokemones;
     Lista<InfoPokemon> _todosLosPokemones;
-    DiccMat<Conj<InfoPokemon>::Iterador> _posicionesPokemons;
+    DiccMat<Lista<InfoPokemon>::Iterador> _posicionesPokemons;
     DiccMat<Lista<Jugador>*> _posicionesJugadores;
 
 };
