@@ -28,7 +28,6 @@ void TestsJuego::correr_tests() {
     // conectarse
     RUN_TEST(test_juego_conectarse_conecta_al_jugador)
     RUN_TEST(test_juego_conectarse_pone_al_jugador_en_posicion)
-    RUN_TEST(test_juego_conectarse_agrega_a_entrenadores_posibles)
 
     // entrenadores posibles
     RUN_TEST(test_juego_entrenadores_posibles_ningun_entrenador)
@@ -195,9 +194,6 @@ void TestsJuego::test_juego_conectarse_pone_al_jugador_en_posicion() {
     j.conectarse(id, Coor(1, 2));
 
     ASSERT(j.posicion(id) == Coor(1, 2))
-}
-
-void TestsJuego::test_juego_conectarse_agrega_a_entrenadores_posibles() {
 }
 
 void TestsJuego::test_juego_entrenadores_posibles_ningun_entrenador() {

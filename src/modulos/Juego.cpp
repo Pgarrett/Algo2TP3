@@ -113,19 +113,26 @@ void Juego::AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, Juego::InfoJugador
     if (not d.definido(c)) {
         d.definir(c, new Lista<Jugador>);
     }
-    Lista<Jugador> l = *(d.significado(c));
+    Lista<Jugador>& l = *(d.significado(c));
     j.itPosicion = l.AgregarAtras(j.id.Siguiente());
     j.posicion = c;
 }
 
 void Juego::moverse(const Jugador &id, const Coordenada &c) {
-    InfoVectorJugadores t = _jugadoresPorID[id];
-    InfoJugador infoJ = t.info.Siguiente();
+    InfoVectorJugadores tupJug = _jugadoresPorID[id];
+    InfoJugador& infoJ = tupJug.info.Siguiente();
 
     if (debeSancionarse(id, c)){
         if (infoJ.sanciones < 4){
             infoJ.sanciones++;
+        } else {
+            _expulsados.AgregarRapido(infoJ.id.Siguiente());
+            infoJ.id.EliminarSiguiente();
+            tupJug.info.EliminarSiguiente();
         }
+    } else {
+        infoJ.itPosicion.EliminarSiguiente();
+        AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
     }
 }
 
@@ -172,7 +179,7 @@ Nat Juego::DistEuclidea(const Coordenada c1, const Coordenada c2) const{
 bool Juego::debeSancionarse(const Jugador j, const Coordenada c) const {
     InfoVectorJugadores t = _jugadoresPorID[j];
     InfoJugador infoJ = t.info.Siguiente();
-    return !_mapa.hayCamino(infoJ.posicion, c) || DistEuclidea(infoJ.posicion, c);
+    return !_mapa.hayCamino(infoJ.posicion, c) || DistEuclidea(infoJ.posicion, c) > 100;
 }
 
 Conj<Jugador> Juego::entrenadoresPosibles(const Coordenada &c) const {

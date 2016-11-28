@@ -43,8 +43,6 @@ private:
 
     static void test_juego_conectarse_pone_al_jugador_en_posicion();
 
-    static void test_juego_conectarse_agrega_a_entrenadores_posibles();
-
     static void test_juego_entrenadores_posibles_ningun_entrenador();
 
     static void test_juego_entrenadores_posibles_entrenador_cercano();
