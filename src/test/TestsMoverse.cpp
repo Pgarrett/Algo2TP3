@@ -8,6 +8,7 @@ Jugador agregarJugadorConectadoEn(Juego& j, Coor c);
 Mapa mapaCon(Coordenada c1, Coordenada c2);
 Mapa mapaCon(Coor c1, Coor c2, Coor c3, Coor c4);
 Mapa mapaCon(Coor c1, Coor c2, Coor c3, Coor c4, Coor c5);
+void hacerQueCapturen(Juego& j, Jugador jug, Coor c);
 
 void TestsMoverse::correr_tests() {
     RUN_TEST(test_moverse_sanciones_iguales_en_movimiento_valido)
@@ -19,14 +20,23 @@ void TestsMoverse::correr_tests() {
     RUN_TEST(test_moverse_expulsar_saca_de_entrenadores_posibles)
     RUN_TEST(test_moverse_expulsar_saca_del_mapa_al_jugador)
     RUN_TEST(test_moverse_jugador_expulsado_no_puede_capturar)
-//    RUN_TEST(test_moverse_movimientos_captura_en_rango)
-//    RUN_TEST(test_moverse_movimientos_captura_sin_entrenadores_cerca)
-//    RUN_TEST(test_moverse_movimientos_captura_fuera_de_rango)
-//    RUN_TEST(test_moverse_movimientos_captura_movimiento_invalido_no_suma)
-//    RUN_TEST(test_moverse_movimientos_captura_en_rango_otro_poke)
-//    RUN_TEST(test_moverse_movimientos_captura_sin_entrenadores_cerca_otro_poke)
-//    RUN_TEST(test_moverse_movimientos_captura_entro_a_un_rango)
-//    RUN_TEST(test_moverse_movimientos_captura_sale_de_un_rango)
+    RUN_TEST(test_moverse_movimientos_captura_en_rango)
+    RUN_TEST(test_moverse_movimientos_captura_sin_entrenadores_cerca)
+    RUN_TEST(test_moverse_movimientos_captura_fuera_de_rango)
+    RUN_TEST(test_moverse_movimientos_captura_movimiento_invalido_no_suma)
+    RUN_TEST(test_moverse_movimientos_captura_en_rango_otro_poke)
+    RUN_TEST(test_moverse_movimientos_captura_sin_entrenadores_cerca_otro_poke)
+    RUN_TEST(test_moverse_movimientos_captura_entro_a_un_rango)
+    RUN_TEST(test_moverse_movimientos_captura_sale_de_un_rango)
+    RUN_TEST(test_moverse_movimientos_captura_no_aumentan_con_expulsado)
+    RUN_TEST(test_moverse_movimientos_captura_no_aumentan_con_desconectado)
+    RUN_TEST(test_moverse_movimientos_captura_conectarse_fuera_del_rango)
+    RUN_TEST(test_moverse_movimientos_captura_conectarse_en_el_rango)
+    RUN_TEST(test_moverse_atrapar_a_los_10_movimientos)
+    RUN_TEST(test_moverse_pokemon_atrapado_no_tiene_posicion)
+    RUN_TEST(test_moverse_jugador_desconectado_no_atrapa)
+    RUN_TEST(test_moverse_si_salio_del_rango_no_atrapa)
+    RUN_TEST(test_moverse_atrapa_el_jugador_con_menos_pokemones)
 //    RUN_TEST(test_moverse_expulsar_cantidad_total_de_pokemones)
 }
 
@@ -323,3 +333,181 @@ void TestsMoverse::test_moverse_movimientos_captura_sale_de_un_rango() {
     ASSERT(not juego.hayPokemonCercano(c2))
     ASSERT_EQ(juego.cantMovimientosParaCaptura(c5), 9)
 }
+
+// El contador de un pokemon no deberia aumentar cuando alguien se conecta fuera del rango
+void TestsMoverse::test_moverse_movimientos_captura_conectarse_fuera_del_rango() {
+    Coordenada c1(1, 1), c2(1, 2), c3(1, 3), c4(1, 4), c5(1, 5);
+    Juego juego(mapaCon(c1, c2, c3, c4, c5));
+    agregarJugadorConectadoEn(juego, c5);
+    juego.agregarPokemon("poke2", c5);
+
+    agregarJugadorConectadoEn(juego, c1);
+
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c5), 10)
+}
+
+// El contador de un pokemon deberia resetearse cuando alguien se conecta en el rango
+void TestsMoverse::test_moverse_movimientos_captura_conectarse_en_el_rango() {
+    Coordenada c1(1, 1), c2(1, 2), c3(1, 3), c4(1, 4), c5(1, 5);
+    Juego juego(mapaCon(c1, c2, c3, c4, c5));
+    agregarJugadorConectadoEn(juego, c5);
+    juego.agregarPokemon("poke2", c5);
+
+    Jugador j = agregarJugadorConectadoEn(juego, c1);
+    juego.moverse(j, c2);
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c5), 9)
+
+    agregarJugadorConectadoEn(juego, c5);
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c5), 10)
+}
+
+void TestsMoverse::test_moverse_movimientos_captura_no_aumentan_con_expulsado() {
+    Coordenada c1(1, 1), c2(1, 2), c3(5, 5), c4(5, 6), cInvalida(10, 10);
+    Juego juego(mapaCon(c1, c2, c3, c4, cInvalida));
+    Jugador j = agregarJugadorConectadoEn(juego, c1);
+    juego.agregarPokemon("poke", c4);
+    Jugador expulsado = agregarJugadorConectadoEn(juego, c4);
+
+    for(int i = 0; i < 5; i++)// expulsar
+        juego.moverse(expulsado, cInvalida);
+
+    juego.moverse(j, c2);
+    juego.moverse(j, c2);
+
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c4), 0)
+}
+
+void TestsMoverse::test_moverse_movimientos_captura_no_aumentan_con_desconectado() {
+    Coordenada c1(1, 1), c2(1, 2), c3(5, 5), c4(5, 6);
+    Juego juego(mapaCon(c1, c2, c3, c4));
+    Jugador j1 = agregarJugadorConectadoEn(juego, c1);
+    juego.agregarPokemon("poke", c4);
+    Jugador j2 = agregarJugadorConectadoEn(juego, c4);
+
+    juego.desconectarse(j2);
+
+    juego.moverse(j1, c2);
+    juego.moverse(j1, c2);
+
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c4), 0)
+}
+
+void TestsMoverse::test_moverse_atrapar_a_los_10_movimientos() {
+    Coordenada c1(1, 1), c2(1, 2), c3(5, 5), c4(5, 6);
+    Juego juego(mapaCon(c1, c2, c3, c4));
+    Jugador j = agregarJugadorConectadoEn(juego, c1);
+    Jugador m = agregarJugadorConectadoEn(juego, c4);
+    juego.agregarPokemon("poke", c1);
+
+    for(int i = 0; i < 9; i++)
+        juego.moverse(m, c4);
+
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c1), 1)
+    ASSERT_EQ(juego.pokemons(j).CantClaves(), 0);
+
+    juego.moverse(m, c4);
+    ASSERT_EQ(juego.pokemons(j).CantClaves(), 1);
+    ASSERT_EQ(juego.pokemons(j).Significado("poke"), 1);
+}
+
+void TestsMoverse::test_moverse_pokemon_atrapado_no_tiene_posicion() {
+    Coordenada c1(1, 1), c2(1, 2), c3(5, 5), c4(5, 6);
+    Juego juego(mapaCon(c1, c2, c3, c4));
+    Jugador m = agregarJugadorConectadoEn(juego, c4);
+    juego.agregarPokemon("poke", c1);
+    agregarJugadorConectadoEn(juego, c1);
+
+    ASSERT(juego.posConPokemons().Pertenece(c1));
+
+    for(int i = 0; i < 10; i++)
+        juego.moverse(m, c4);
+
+    ASSERT(not juego.hayPokemonCercano(c1));
+    ASSERT(juego.posConPokemons().EsVacio());
+}
+
+void TestsMoverse::test_moverse_atrapa_el_jugador_con_menos_pokemones() {
+    Coordenada c1(1, 1), c2(1, 2), c3(1, 3), c4(1, 4), c5(5,6);
+    Juego juego(mapaCon(c1, c2, c3, c4, c5));
+    Jugador m = agregarJugadorConectadoEn(juego, c5);
+
+    Jugador j1 = agregarJugadorConectadoEn(juego, c1);
+    // j1 captura dos pokemones
+    juego.agregarPokemon("poke", c1);
+    hacerQueCapturen(juego, m, c5);
+    juego.agregarPokemon("poke", c1);
+    hacerQueCapturen(juego, m, c5);
+    // j2 sale del rango
+    juego.moverse(j1, c4);
+
+    Jugador j2 = agregarJugadorConectadoEn(juego, c1);
+    // j2 captura un pokemon
+    juego.agregarPokemon("poke", c1);
+    hacerQueCapturen(juego, m, c5);
+    // j2 sale del rango
+    juego.moverse(j2, c4);
+
+    // j3 se conecta afuera del rango
+    Jugador j3 = agregarJugadorConectadoEn(juego, c4);
+
+    juego.agregarPokemon("poke", c1);
+    juego.moverse(j1, c1); // entra j1 con 2 pokes
+    juego.moverse(j3, c1); // entra j3 con 0 pokes
+    juego.moverse(j2, c1); // entra j2 con 1 poke
+
+    hacerQueCapturen(juego, m, c5);
+
+    // j2 debe haber capturado
+    ASSERT_EQ(juego.pokemons(j2).CantClaves(), 1);
+}
+
+void hacerQueCapturen(Juego& j, Jugador jug, Coor c){
+    for(int i = 0; i < 10; i++)
+        j.moverse(jug, c);
+}
+
+void TestsMoverse::test_moverse_si_salio_del_rango_no_atrapa() {
+    Coordenada c1(1, 1), c2(1, 2), c3(1, 3), c4(1, 4), c5(5,6);
+    Juego juego(mapaCon(c1, c2, c3, c4, c5));
+    juego.agregarPokemon("poke", c1);
+    Jugador j = agregarJugadorConectadoEn(juego, c1);
+    Jugador m = agregarJugadorConectadoEn(juego, c5);
+
+    // J captura un pokemon
+    hacerQueCapturen(juego, m, c5);
+    ASSERT_EQ(juego.pokemons(j).CantClaves(), 1);
+    ASSERT_EQ(juego.pokemons(j).Significado("poke"), 1);
+
+    juego.agregarPokemon("poke", c1);
+    Jugador otro = agregarJugadorConectadoEn(juego, c1);
+    juego.moverse(otro, c4); // otro sale del rango
+
+    // M se mueve, tiene que haber capturado J, que estaba en el rango
+    hacerQueCapturen(juego, m, c5);
+    ASSERT_EQ(juego.pokemons(j).CantClaves(), 1);
+    ASSERT_EQ(juego.pokemons(j).Significado("poke"), 2);
+}
+
+void TestsMoverse::test_moverse_jugador_desconectado_no_atrapa() {
+    Coordenada c1(1, 1), c2(1, 2), c3(1, 3), c4(1, 4), c5(5,6);
+    Juego juego(mapaCon(c1, c2, c3, c4, c5));
+    juego.agregarPokemon("poke", c1);
+    Jugador j = agregarJugadorConectadoEn(juego, c1);
+    Jugador m = agregarJugadorConectadoEn(juego, c5);
+
+    // J captura un pokemon
+    hacerQueCapturen(juego, m, c5);
+    ASSERT_EQ(juego.pokemons(j).CantClaves(), 1);
+    ASSERT_EQ(juego.pokemons(j).Significado("poke"), 1);
+
+    juego.agregarPokemon("poke", c1);
+    Jugador otro = agregarJugadorConectadoEn(juego, c1);
+    juego.desconectarse(otro); // otro se desconecta
+
+    // M se mueve, tiene que haber capturado J, que estaba conectado
+    hacerQueCapturen(juego, m, c5);
+    ASSERT_EQ(juego.pokemons(j).CantClaves(), 1);
+    ASSERT_EQ(juego.pokemons(j).Significado("poke"), 2);
+}
+
+

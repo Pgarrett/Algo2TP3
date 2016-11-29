@@ -44,18 +44,25 @@ private:
 
     static void test_moverse_movimientos_captura_sale_de_un_rango();
 
+    static void test_moverse_movimientos_captura_conectarse_fuera_del_rango();
+
+    static void test_moverse_movimientos_captura_conectarse_en_el_rango();
+
+    static void test_moverse_movimientos_captura_no_aumentan_con_desconectado();
+
+    static void test_moverse_movimientos_captura_no_aumentan_con_expulsado();
+
+    static void test_moverse_atrapar_a_los_10_movimientos();
+
+    static void test_moverse_pokemon_atrapado_no_tiene_posicion();
+
+    static void test_moverse_atrapa_el_jugador_con_menos_pokemones();
+
+    static void test_moverse_si_salio_del_rango_no_atrapa();
+
+    static void test_moverse_jugador_desconectado_no_atrapa();
+
     static void test_moverse_expulsar_cantidad_total_de_pokemones();
-//
-//
-//
-//    Atrapar/
-//
-//      Cantidad de movimientos para captura debería incrementar cuando CASOS
-//
-//            Un pokemon que es atrapado no deberia estar en posConPokemones
-//
-//            Un pokemon atrapado no deberia estar en un territorio
-//
 //    Expulsar/
 //
 //    La cantidad de pokemones por especie debe bajar cuando se expulsa a alguien con pokemones

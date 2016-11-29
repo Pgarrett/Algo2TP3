@@ -132,11 +132,15 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
             _expulsados.AgregarRapido(infoJ.id.Siguiente());
             infoJ.id.EliminarSiguiente();
             infoJ.itPosicion.EliminarSiguiente();
-            tupJug.info.EliminarSiguiente();
 //            Conj<Conj<InfoPokemon>::Iterador>::Iterador itPCapturados = infoJ.pokemonesCapturados.CrearIt();
 //            while(itPCapturados.HaySiguiente()){
 //                itPCapturados.EliminarSiguiente();
 //            }
+
+            if (hayPokemonCercano(infoJ.posicion)) { // Si estaba esperando para atrapar
+                tupJug.encolado.EliminarSiguiente();
+            }
+            tupJug.info.EliminarSiguiente();
         }
     } else {
         if (hayPokemonCercano(c)) { // Va a estar o seguir en un rango
@@ -145,10 +149,13 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
                 InfoPokemon &infoP = _posicionesPokemons.significado(p).Siguiente();
                 infoP.contador = 0;
             }
+            ActualizarMenos(c);
         } else { // No va a estar en un rango
-
+            if (hayPokemonCercano(infoJ.posicion)){ // Salio de un rango
+                tupJug.encolado.EliminarSiguiente();
+            }
+            ActualizarTodos();
         }
-
         infoJ.itPosicion.EliminarSiguiente();
         AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
     }
@@ -324,7 +331,7 @@ bool Juego::perteneceAPokemons(const Pokemon &p) const{
 void Juego::ActualizarPokemon(Lista<InfoPokemon>::Iterador itPokemones){
     InfoPokemon& infoP = itPokemones.Siguiente();
     ++infoP.contador;
-    if(infoP.contador == 10){
+    if(!infoP.jugadoresEnRango.EsVacia() && infoP.contador == 10){
         Lista<Jugador>::Iterador e = infoP.jugadoresEnRango.Proximo();
         infoP.salvaje = false;
         InfoJugador& infoJ = _jugadoresPorID[e.Siguiente()].info.Siguiente();
@@ -354,4 +361,21 @@ void Juego::ActualizarMenos(const Coordenada &c){
         }
         itCoor.Avanzar();
     }
+}
+
+Dicc<Pokemon, Nat> Juego::pokemons(const Jugador &j) const {
+    InfoJugador jugador = _jugadoresPorID[j].info.Siguiente();
+    Conj<Lista<InfoPokemon>::Iterador>::Iterador it = jugador.pokemonesCapturados.CrearIt();
+    Dicc<Pokemon, Nat> dicc;
+    while(it.HaySiguiente()){
+        Pokemon tipo = it.Siguiente().Siguiente().tipo;
+        if (!dicc.Definido(tipo)){
+            dicc.DefinirRapido(tipo, 1);
+        }else{
+            Nat cantidad = dicc.Significado(tipo);
+            dicc.Definir(tipo, cantidad + 1);
+        }
+        it.Avanzar();
+    }
+    return dicc;
 }
