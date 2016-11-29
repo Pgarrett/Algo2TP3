@@ -36,7 +36,7 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
                     while(itJugadores.HaySiguiente()){
                         Jugador e = itJugadores.Siguiente();
                         InfoVectorJugadores tupJugId = _jugadoresPorID[e];
-                        Nat cantPokemonesJug = tupJugId.info.Siguiente().pokemonesCapturados.Cardinal();
+                        Nat cantPokemonesJug = tupJugId.info.Siguiente().pokemonesCapturados.Longitud();
                         ColaMinPrior<Lista<Jugador>::Iterador>::Iterador itCola = itPokemon.Siguiente().jugadoresEnRango.Encolar(cantPokemonesJug, itJugadores);
                         _jugadoresPorID[e].encolado = itCola;
                         itJugadores.Avanzar();
@@ -107,7 +107,7 @@ void Juego::conectarse(const Jugador &j, const Coordenada &c) {
     AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
     if (hayPokemonCercano(c)) {
         InfoPokemon &p = _posicionesPokemons.significado(posPokemonCercano(c)).Siguiente();
-        const ColaMinPrior<Lista<Jugador>::Iterador>::Iterador &iterador = p.jugadoresEnRango.Encolar(infoJ.pokemonesCapturados.Cardinal(), infoJ.itPosicion);
+        const ColaMinPrior<Lista<Jugador>::Iterador>::Iterador &iterador = p.jugadoresEnRango.Encolar(infoJ.pokemonesCapturados.Longitud(), infoJ.itPosicion);
         _jugadoresPorID[j].encolado = iterador;
         p.contador = 0;
     }
@@ -129,13 +129,21 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
         if (infoJ.sanciones < 4){
             infoJ.sanciones++;
         } else { // Expulsar
+            Lista<Lista<InfoPokemon>::Iterador>::Iterador itPCapturados  = infoJ.pokemonesCapturados.CrearIt();
+            while(itPCapturados.HaySiguiente()){
+                InfoPokemon &infoP = itPCapturados.Siguiente().Siguiente();
+                Nat pViejos = _pokemones.Significado(infoP.tipo);
+                _pokemones.Borrar(infoP.tipo);
+                if (pViejos != 1){
+                    _pokemones.Definir(infoP.tipo, pViejos - 1);
+                }
+                itPCapturados.Siguiente().EliminarSiguiente();
+                itPCapturados.Avanzar();
+            }
+
             _expulsados.AgregarRapido(infoJ.id.Siguiente());
             infoJ.id.EliminarSiguiente();
             infoJ.itPosicion.EliminarSiguiente();
-//            Conj<Conj<InfoPokemon>::Iterador>::Iterador itPCapturados = infoJ.pokemonesCapturados.CrearIt();
-//            while(itPCapturados.HaySiguiente()){
-//                itPCapturados.EliminarSiguiente();
-//            }
 
             if (hayPokemonCercano(infoJ.posicion)) { // Si estaba esperando para atrapar
                 tupJug.encolado.EliminarSiguiente();
@@ -335,7 +343,7 @@ void Juego::ActualizarPokemon(Lista<InfoPokemon>::Iterador itPokemones){
         Lista<Jugador>::Iterador e = infoP.jugadoresEnRango.Proximo();
         infoP.salvaje = false;
         InfoJugador& infoJ = _jugadoresPorID[e.Siguiente()].info.Siguiente();
-        infoJ.pokemonesCapturados.AgregarRapido(itPokemones);
+        infoJ.pokemonesCapturados.AgregarAtras(itPokemones);
         _posicionesPokemons.borrar(infoP.posicion);
     }
 }
@@ -365,7 +373,7 @@ void Juego::ActualizarMenos(const Coordenada &c){
 
 Dicc<Pokemon, Nat> Juego::pokemons(const Jugador &j) const {
     InfoJugador jugador = _jugadoresPorID[j].info.Siguiente();
-    Conj<Lista<InfoPokemon>::Iterador>::Iterador it = jugador.pokemonesCapturados.CrearIt();
+    Lista<Lista<InfoPokemon>::Iterador>::Iterador it = jugador.pokemonesCapturados.CrearIt();
     Dicc<Pokemon, Nat> dicc;
     while(it.HaySiguiente()){
         Pokemon tipo = it.Siguiente().Siguiente().tipo;

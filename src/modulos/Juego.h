@@ -122,11 +122,11 @@ private:
         Conj<Jugador>::Iterador id;
         bool estaConectado;
         Nat sanciones;
-        Conj<Lista<InfoPokemon>::Iterador> pokemonesCapturados;
+        Lista<Lista<InfoPokemon>::Iterador> pokemonesCapturados;
         Coordenada posicion;
         Lista<Jugador>::Iterador itPosicion;
         InfoJugador(Conj<Jugador>::Iterador ID) : id(ID), estaConectado(false), sanciones(0),
-                                                  pokemonesCapturados(Conj<Lista<InfoPokemon>::Iterador>()), posicion(Coordenada(0, 0)),
+                                                  pokemonesCapturados(Lista<Lista<InfoPokemon>::Iterador>()), posicion(Coordenada(0, 0)),
                                                   itPosicion(Lista<Jugador>().CrearIt()) { }
     };
 

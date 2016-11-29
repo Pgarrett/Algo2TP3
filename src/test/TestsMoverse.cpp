@@ -37,7 +37,9 @@ void TestsMoverse::correr_tests() {
     RUN_TEST(test_moverse_jugador_desconectado_no_atrapa)
     RUN_TEST(test_moverse_si_salio_del_rango_no_atrapa)
     RUN_TEST(test_moverse_atrapa_el_jugador_con_menos_pokemones)
-//    RUN_TEST(test_moverse_expulsar_cantidad_total_de_pokemones)
+    RUN_TEST(test_moverse_expulsar_cantidad_total_de_pokemones)
+    RUN_TEST(test_moverse_expulsar_cantidad_pokemones_por_especie)
+    RUN_TEST(test_moverse_expulsar_rareza)
 }
 
 //    Las sanciones deben mantenerse iguales si se movió de forma valida
@@ -187,28 +189,6 @@ Mapa mapaCon(Coor c1, Coor c2, Coor c3, Coor c4) {
     m.agregarCoordenada(c3);
     m.agregarCoordenada(c4);
     return m;
-}
-
-//    La cantidad de pokemones totales debe bajar cuando se expulsa a alguien con pokemones
-void TestsMoverse::test_moverse_expulsar_cantidad_total_de_pokemones() {
-    Coordenada c1(1, 1), c2(1, 2), c3(4, 4), c4(4, 5);
-    Mapa mapa = mapaCon(c1, c2, c3, c4);
-    Juego juego(mapa);
-    Jugador j1 = agregarJugadorConectadoEn(juego, c1);
-    Jugador j2 = agregarJugadorConectadoEn(juego, c3);
-    juego.agregarPokemon("poke", c2);
-
-    for (int i = 0; i < 5; ++i) {
-        juego.moverse(j2, c4);
-        juego.moverse(j2, c3);
-    }
-    // j1 atrapo pokemon
-    ASSERT(juego.cantPokemonsTotales() == 1)
-
-    // Expulsar
-    for(int i = 0; i < 5; i++)
-        juego.moverse(j1, c3);
-    ASSERT(juego.cantPokemonsTotales() == 0)
 }
 
 // El contador de un pokemon no deberia aumentar si el jugador se movio en el rango
@@ -509,5 +489,73 @@ void TestsMoverse::test_moverse_jugador_desconectado_no_atrapa() {
     ASSERT_EQ(juego.pokemons(j).CantClaves(), 1);
     ASSERT_EQ(juego.pokemons(j).Significado("poke"), 2);
 }
+
+
+//    La cantidad de pokemones totales debe bajar cuando se expulsa a alguien con pokemones
+void TestsMoverse::test_moverse_expulsar_cantidad_total_de_pokemones() {
+    Coordenada c1(1, 1), c2(1, 2), c3(4, 4), c4(4, 5);
+    Mapa mapa = mapaCon(c1, c2, c3, c4);
+    Juego juego(mapa);
+    Jugador j1 = agregarJugadorConectadoEn(juego, c1);
+    Jugador j2 = agregarJugadorConectadoEn(juego, c3);
+    juego.agregarPokemon("poke", c2);
+
+    for (int i = 0; i < 10; ++i)
+        juego.moverse(j2, c4);
+
+    // j1 atrapo pokemon
+    ASSERT(juego.cantPokemonsTotales() == 1)
+
+    // Expulsar
+    for(int i = 0; i < 5; i++)
+        juego.moverse(j1, c3);
+    ASSERT(juego.cantPokemonsTotales() == 0)
+}
+
+void TestsMoverse::test_moverse_expulsar_cantidad_pokemones_por_especie() {
+    Coordenada c1(1, 1), c2(1, 2), c3(4, 4), c4(4, 5);
+    Mapa mapa = mapaCon(c1, c2, c3, c4);
+    Juego juego(mapa);
+    Jugador j1 = agregarJugadorConectadoEn(juego, c1);
+    Jugador j2 = agregarJugadorConectadoEn(juego, c3);
+    juego.agregarPokemon("poke", c2);
+
+    for (int i = 0; i < 10; ++i)
+        juego.moverse(j2, c4);
+
+    // j1 atrapo pokemon
+    ASSERT_EQ(juego.cantMismaEspecie("poke"), 1)
+
+    // Expulsar
+    for(int i = 0; i < 5; i++)
+        juego.moverse(j1, c3);
+    ASSERT_EQ(juego.cantMismaEspecie("poke"), 0)
+}
+
+void TestsMoverse::test_moverse_expulsar_rareza() {
+    Coordenada c1(1, 1), c2(1, 2), c3(8, 8), c4(8, 9);
+    Mapa mapa = mapaCon(c1, c2, c3, c4);
+    Juego juego(mapa);
+    Jugador j1 = agregarJugadorConectadoEn(juego, c1);
+    Jugador j2 = agregarJugadorConectadoEn(juego, c3);
+    juego.agregarPokemon("poke", c2);
+    juego.agregarPokemon("otropoke", c4);
+
+    for (int i = 0; i < 10; ++i)
+        juego.moverse(j2, c4);
+
+    // j1 atrapo pokemon
+    ASSERT_EQ(juego.indiceRareza("poke"), 50)
+    ASSERT_EQ(juego.indiceRareza("otropoke"), 50)
+
+    // Expulsar
+    for(int i = 0; i < 5; i++)
+        juego.moverse(j1, c3);
+    ASSERT_EQ(juego.indiceRareza("otropoke"), 0)
+}
+
+
+
+
 
 

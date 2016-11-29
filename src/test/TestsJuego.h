@@ -71,10 +71,6 @@ private:
 
     static void test_juego_cant_pokemones_totales_agregando_pokemon_igual_a_uno();
 
-    static void test_juego_cant_pokemones_totales_jugador_atrapa_pokemon(); // TODO cuando este listo moverse
-
-    static void test_juego_cant_pokemones_totales_jugador_con_pokemons_es_eliminado(); // TODO cuando este listo moverse
-
     //AgregarPokemon
 
     static void test_juego_agregar_pokemones();

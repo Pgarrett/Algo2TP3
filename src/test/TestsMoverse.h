@@ -63,14 +63,10 @@ private:
     static void test_moverse_jugador_desconectado_no_atrapa();
 
     static void test_moverse_expulsar_cantidad_total_de_pokemones();
-//    Expulsar/
-//
-//    La cantidad de pokemones por especie debe bajar cuando se expulsa a alguien con pokemones
-//
-//            La rareza de un pokemon debe bajar cuando se expulsa a un jugador que lo capturó
-//
 
+    static void test_moverse_expulsar_cantidad_pokemones_por_especie();
 
+    static void test_moverse_expulsar_rareza();
 
 };
 
