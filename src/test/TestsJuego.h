@@ -80,6 +80,8 @@ private:
     static void test_juego_agregar_pokemones();
 
     static void test_juego_agregar_pokemones_en_todas_las_posiciones_posibles();
+
+    static void test_juego_pokemon_recien_agregado_sin_movimientos_para_captura();
 };
 
 

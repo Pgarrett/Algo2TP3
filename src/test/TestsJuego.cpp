@@ -34,7 +34,7 @@ void TestsJuego::correr_tests() {
     RUN_TEST(test_juego_entrenadores_posibles_ningun_entrenador)
     RUN_TEST(test_juego_entrenadores_posibles_entrenador_cercano)
     RUN_TEST(test_juego_entrenadores_posibles_entrenador_lejano)
-//    RUN_TEST(test_juego_entrenadores_posibles_jugador_se_desconecta)
+    RUN_TEST(test_juego_entrenadores_posibles_jugador_se_desconecta)
     RUN_TEST(test_juego_entrenadores_posibles_pokemon_se_agrega_despues)
 
     // pos pokemon cercano
@@ -53,6 +53,7 @@ void TestsJuego::correr_tests() {
     //AgregarPokemon
     RUN_TEST(test_juego_agregar_pokemones);
     RUN_TEST(test_juego_agregar_pokemones_en_todas_las_posiciones_posibles);
+    RUN_TEST(test_juego_pokemon_recien_agregado_sin_movimientos_para_captura)
 }
 
 Mapa crearMapaDefault() {
@@ -430,4 +431,13 @@ void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles()
         ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
         it.Avanzar();
     }
+}
+
+void TestsJuego::test_juego_pokemon_recien_agregado_sin_movimientos_para_captura() {
+    Mapa mapa = crearMapaDefault();
+    Juego j(mapa);
+
+    j.agregarPokemon("pikachu", Coor(0,2));
+
+    ASSERT_EQ( j.cantMovimientosParaCaptura(Coor(0,2)), 0)
 }

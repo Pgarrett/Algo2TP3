@@ -128,10 +128,15 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
     if (debeSancionarse(id, c)){
         if (infoJ.sanciones < 4){
             infoJ.sanciones++;
-        } else {
+        } else { // Expulsar
             _expulsados.AgregarRapido(infoJ.id.Siguiente());
             infoJ.id.EliminarSiguiente();
+            infoJ.itPosicion.EliminarSiguiente();
             tupJug.info.EliminarSiguiente();
+//            Conj<Conj<InfoPokemon>::Iterador>::Iterador itPCapturados = infoJ.pokemonesCapturados.CrearIt();
+//            while(itPCapturados.HaySiguiente()){
+//                itPCapturados.EliminarSiguiente();
+//            }
         }
     } else {
         infoJ.itPosicion.EliminarSiguiente();
@@ -274,4 +279,8 @@ Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
 Pokemon Juego::pokemonEnPos(const Coordenada &c) const{
     assert(posConPokemons().Pertenece(c));
     return _posicionesPokemons.significado(c).Siguiente().tipo;
+}
+
+Nat Juego::cantMovimientosParaCaptura(const Coordenada &c) const {
+    return 0;
 }
