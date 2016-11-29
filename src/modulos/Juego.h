@@ -122,7 +122,7 @@ private:
         Conj<Jugador>::Iterador id;
         bool estaConectado;
         Nat sanciones;
-        Conj<Conj<InfoPokemon>::Iterador> pokemonesCapturados;
+        Conj<Lista<InfoPokemon>::Iterador> pokemonesCapturados;
         Coordenada posicion;
         Lista<Jugador>::Iterador itPosicion;
         InfoJugador(Conj<Jugador>::Iterador ID) : id(ID), estaConectado(false), sanciones(0),
@@ -142,6 +142,9 @@ private:
     void AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, InfoJugador &j, Coordenada c);
     bool hayPokemonEnTerritorio(const Coordenada &c) const;
     bool perteneceAPokemons(const Pokemon &p) const;
+    void ActualizarPokemon(Lista<InfoPokemon>::Iterador itPokemones);
+    void ActualizarTodos();
+    void ActualizarMenos(const Coordenada &c);
 
     Mapa _mapa;
     Lista<InfoJugador> _jugadores;

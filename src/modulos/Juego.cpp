@@ -305,3 +305,38 @@ bool Juego::perteneceAPokemons(const Pokemon &p) const{
     }
     return (encontrado);
 }
+
+void Juego::ActualizarPokemon(Lista<InfoPokemon>::Iterador itPokemones){
+    InfoPokemon& infoP = itPokemones.Siguiente();
+    ++infoP.contador;
+    if(infoP.contador == 10){
+        Lista<Jugador>::Iterador e = infoP.jugadoresEnRango.Proximo();
+        infoP.salvaje = false;
+        InfoJugador& infoJ = _jugadoresPorID[e.Siguiente()].info.Siguiente();
+        infoJ.pokemonesCapturados.AgregarRapido(itPokemones);
+        _posicionesPokemons.borrar(infoP.posicion);
+    }
+}
+
+void Juego::ActualizarTodos(){
+    Conj<Coordenada> cs = _posicionesPokemons.coordenadas();
+    Conj<Coordenada>::Iterador itCoor = cs.CrearIt();
+    while(itCoor.HaySiguiente()){
+        Lista<InfoPokemon>::Iterador itPokemon = _posicionesPokemons.significado(itCoor.Siguiente());
+        ActualizarPokemon(itPokemon);
+        itCoor.Avanzar();
+    }
+}
+
+void Juego::ActualizarMenos(const Coordenada &c){
+    Coordenada p = posPokemonCercano(c);
+    Conj<Coordenada> cs = _posicionesPokemons.coordenadas();
+    Conj<Coordenada>::Iterador itCoor = cs.CrearIt();
+    while(itCoor.HaySiguiente()){
+        if(itCoor.Siguiente() != p){
+            Lista<InfoPokemon>::Iterador itPokemon = _posicionesPokemons.significado(itCoor.Siguiente());
+            ActualizarPokemon(itPokemon);
+        }
+        itCoor.Avanzar();
+    }
+}
