@@ -27,8 +27,8 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
     _posicionesPokemons.definir(c, itPokemon);
     Nat desdeLat = DamePos(c.latitud, 2);
     Nat desdeLong = DamePos(c.longitud, 2);
-    while(desdeLat < (c.latitud + 2)){
-        while(desdeLong < (c.longitud + 2)){
+    while(desdeLat <= (c.latitud + 2)){
+        while(desdeLong <= (c.longitud + 2)){
             Coordenada cIndex = Coordenada(desdeLat, desdeLong);
             if(DistEuclidea(cIndex, c) <= 4){
                 if(_posicionesJugadores.definido(cIndex)){
@@ -46,6 +46,7 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
             ++desdeLong;
         }
         ++desdeLat;
+        desdeLong = DamePos(c.longitud, 2);
     }
     if (_pokemones.Definido(p)){
         Nat cViejo = _pokemones.Significado(p);
@@ -230,7 +231,7 @@ bool Juego::hayPokemonEnTerritorio(const Coordenada &c) const{
     Nat j = DamePos(longC, 5);
     while (i <= (latC + 5)) {
         while (j <= (longC + 5)) {
-            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j))) {
+            if (_posicionesPokemons.definido(Coordenada(i, j)) && DistEuclidea(c, Coordenada(i, j)) <= 25) {
                 res = true;
             }
             ++j;
@@ -249,7 +250,7 @@ Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const 
 void Juego::desconectarse(const Jugador &j) {
     InfoVectorJugadores ivf = _jugadoresPorID.operator[](j);
     if (hayPokemonCercano(ivf.info.Siguiente().posicion)) {
-        ivf.encolado.EliminarSiguiente();
+        ivf.encolado.EliminarSiguiente();   // TODO checkear si verdaderamente lo elimina, o hay que tengo que trabajar con la referencia de InfoVectorJugadores
     }
     InfoJugador& infoJ = ivf.info.Siguiente();
     infoJ.estaConectado = false;
