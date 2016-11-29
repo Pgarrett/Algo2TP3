@@ -401,7 +401,7 @@ void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles()
                     ++Dido;
                     DCs.AgregarAtras(Coor(i,j));
                 }
-                //cout << "Van " << JuanCarlos << " JuanCarlos, " << Squirtle << " Escuartules y "  << Dido << " OdeWanKenobis - " << "(i,j) = (" << i << "," << j << ") " << endl;
+//                cout << "Van " << JuanCarlos << " JuanCarlos, " << Squirtle << " Escuartules y "  << Dido << " OdeWanKenobis - " << "(i,j) = (" << i << "," << j << ") " << endl;
             }
         }
     }

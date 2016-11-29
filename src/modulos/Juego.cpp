@@ -291,6 +291,17 @@ Nat Juego::cantMovimientosParaCaptura(const Coordenada &c) const {
 }
 
 Nat Juego::indiceRareza(const Pokemon &p) const{
+    assert(perteneceAPokemons(p));
     Nat cuantosP = cantMismaEspecie(p);
     return(100 - (100 * cuantosP / cantPokemonsTotales()));
+}
+
+bool Juego::perteneceAPokemons(const Pokemon &p) const{
+    Lista<InfoPokemon>::const_Iterador it = _todosLosPokemones.CrearIt();
+    bool encontrado = false;
+    while(it.HaySiguiente() && !encontrado){
+        encontrado = (it.Siguiente().tipo == p);
+        it.Avanzar();
+    }
+    return (encontrado);
 }

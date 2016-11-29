@@ -141,6 +141,7 @@ private:
     bool debeSancionarse(const Jugador j, const Coordenada c) const;
     void AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, InfoJugador &j, Coordenada c);
     bool hayPokemonEnTerritorio(const Coordenada &c) const;
+    bool perteneceAPokemons(const Pokemon &p) const;
 
     Mapa _mapa;
     Lista<InfoJugador> _jugadores;
