@@ -213,11 +213,11 @@ Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const 
     return _posicionesJugadores.significado(c)->CrearIt();
 }*/
 
-bool Juego::puedoAgregarPokemon(const Coordenada c){
+bool Juego::puedoAgregarPokemon(const Coordenada &c) const{
     return (_mapa.posExistente(c) && (!_posicionesPokemons.definido(c)) && !hayPokemonEnTerritorio(c));
 }
 
-bool Juego::hayPokemonEnTerritorio(const Coordenada c) {
+bool Juego::hayPokemonEnTerritorio(const Coordenada &c) const{
     bool res = false;
     Nat latC = c.latitud;
     Nat i = DamePos(latC, 5);

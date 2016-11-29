@@ -78,6 +78,8 @@ private:
     //AgregarPokemon
 
     static void test_juego_agregar_pokemones();
+
+    static void test_juego_agregar_pokemones_en_todas_las_posiciones_posibles();
 };
 
 

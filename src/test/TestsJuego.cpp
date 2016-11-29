@@ -3,6 +3,7 @@
 #include "../modulos/Juego.h"
 
 typedef Coordenada Coor;
+typedef Lista<Coordenada>::Iterador itLista;
 
 Mapa crearMapaDefault();
 
@@ -51,6 +52,7 @@ void TestsJuego::correr_tests() {
 
     //AgregarPokemon
     RUN_TEST(test_juego_agregar_pokemones);
+    RUN_TEST(test_juego_agregar_pokemones_en_todas_las_posiciones_posibles);
 }
 
 Mapa crearMapaDefault() {
@@ -63,12 +65,24 @@ Mapa crearMapaDefault() {
     mapa.agregarCoordenada(Coor(1, 4));
     return mapa;
 }
+
 Mapa crearMapaDefault_2() {
     Mapa mapa;
     for (int i = 0; i < 10 ; ++i) {
         for (int j = 0; j < 25 ; ++j) {
             if((i+j) % 10 != 0)
                 mapa.agregarCoordenada(Coor(i, j));
+        }
+    }
+    return mapa;
+}
+
+Mapa crearMapaDefault_3(int a, int l) {
+    Mapa mapa;
+    for (int i = 0; i < a ; ++i) {
+        for (int j = 0; j < l ; ++j) {
+            mapa.agregarCoordenada(Coor(i, j));
+//            cout << "Haciendo mapa 3 : " << (i*l+j) << "de" << (a*l) << endl;
         }
     }
     return mapa;
@@ -353,6 +367,67 @@ void TestsJuego::test_juego_agregar_pokemones(){
 
     ASSERT(j.cantMismaEspecie("JuanCarlos") == 1);
     ASSERT(j.cantMismaEspecie("escuartul") == 2);
-    ASSERT(j.pokemonEnPos(Coor(1,1)) == "JuanCarlos")
+    ASSERT(j.pokemonEnPos(Coor(1,1)) == "JuanCarlos");
+
+    ASSERT(!j.posConPokemons().EsVacio());
+    ASSERT_EQ(j.posConPokemons().Cardinal(), 3);
 }
 
+void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles(){
+    int ancho = 10; int largo = 10;
+    Mapa mapa = crearMapaDefault_3(ancho, largo);
+    Juego pGo = Juego(mapa);
+    int JuanCarlos = 0;
+    int Squirtle = 0;
+    int Dido = 0;
+    Lista<Coordenada> JCCs;
+    Lista<Coordenada> SCs;
+    Lista<Coordenada> DCs;
+    //cout << "Declaro pokes ... " << endl;
+    for (int i = 0; i < ancho; ++i) {
+        for (int j = 0; j < largo; ++j) {
+            if (pGo.puedoAgregarPokemon(Coordenada(i,j))){
+                if((i+j) % 10 == 0) {
+                    pGo.agregarPokemon("JuanCarlos", Coor(i,j));
+                    ++JuanCarlos;
+                    JCCs.AgregarAtras(Coor(i,j));
+                }else if ((i+j) % 13 == 0){
+                    pGo.agregarPokemon("escuartul", Coor(i,j));
+                    ++Squirtle;
+                    SCs.AgregarAtras(Coor(i,j));
+                }else{
+                    pGo.agregarPokemon("OdeWanKenobi", Coor(i,j));
+                    ++Dido;
+                    DCs.AgregarAtras(Coor(i,j));
+                }
+                //cout << "Van " << JuanCarlos << " JuanCarlos, " << Squirtle << " Escuartules y "  << Dido << " OdeWanKenobis - " << "(i,j) = (" << i << "," << j << ") " << endl;
+            }
+        }
+    }
+
+    ASSERT_EQ(pGo.cantMismaEspecie("JuanCarlos"), JuanCarlos);
+    ASSERT_EQ(pGo.cantMismaEspecie("escuartul"), Squirtle);
+    ASSERT_EQ(pGo.cantMismaEspecie("OdeWanKenobi"), Dido);
+    ASSERT(pGo.posConPokemons().Cardinal() == pGo.cantPokemonsTotales());
+    ASSERT(pGo.cantPokemonsTotales() == (JuanCarlos + Squirtle + Dido));
+    itLista it = JCCs.CrearIt();
+    while(it.HaySiguiente()){
+        ASSERT(pGo.pokemonEnPos(it.Siguiente()) == "JuanCarlos");
+        ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
+        it.Avanzar();
+    }
+
+    it = SCs.CrearIt();
+    while(it.HaySiguiente()){
+        ASSERT(pGo.pokemonEnPos(it.Siguiente()) == "escuartul")
+        ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
+        it.Avanzar();
+    }
+
+    it = DCs.CrearIt();
+    while(it.HaySiguiente()){
+        ASSERT(pGo.pokemonEnPos(it.Siguiente()) == "OdeWanKenobi");
+        ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
+        it.Avanzar();
+    }
+}
