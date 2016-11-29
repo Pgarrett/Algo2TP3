@@ -283,5 +283,14 @@ Pokemon Juego::pokemonEnPos(const Coordenada &c) const{
 }
 
 Nat Juego::cantMovimientosParaCaptura(const Coordenada &c) const {
-    return 0;
+    assert(posConPokemons().Pertenece(c));
+    if(!_posicionesPokemons.significado(c).Siguiente().jugadoresEnRango.EsVacia())
+        return (10 - _posicionesPokemons.significado(c).Siguiente().contador);
+    else
+        return 0;
+}
+
+Nat Juego::indiceRareza(const Pokemon &p) const{
+    Nat cuantosP = cantMismaEspecie(p);
+    return(100 - (100 * cuantosP / cantPokemonsTotales()));
 }

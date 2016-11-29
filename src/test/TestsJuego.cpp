@@ -415,6 +415,7 @@ void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles()
     while(it.HaySiguiente()){
         ASSERT(pGo.pokemonEnPos(it.Siguiente()) == "JuanCarlos");
         ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
+        ASSERT(pGo.indiceRareza("JuanCarlos") == (100 - (100 * JuanCarlos / (JuanCarlos+Squirtle+Dido))));
         it.Avanzar();
     }
 
@@ -422,6 +423,7 @@ void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles()
     while(it.HaySiguiente()){
         ASSERT(pGo.pokemonEnPos(it.Siguiente()) == "escuartul")
         ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
+        ASSERT(pGo.indiceRareza("escuartul") == (100 - (100 * Squirtle / (JuanCarlos+Squirtle+Dido))));
         it.Avanzar();
     }
 
@@ -429,6 +431,7 @@ void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles()
     while(it.HaySiguiente()){
         ASSERT(pGo.pokemonEnPos(it.Siguiente()) == "OdeWanKenobi");
         ASSERT(pGo.hayPokemonCercano(it.Siguiente()));
+        ASSERT(pGo.indiceRareza("OdeWanKenobi") == (100 - (100 * Dido / (JuanCarlos+Squirtle+Dido))));
         it.Avanzar();
     }
 }
