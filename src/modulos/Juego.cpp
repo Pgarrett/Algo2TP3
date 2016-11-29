@@ -278,12 +278,16 @@ Coordenada Juego::posPokemonCercano(const Coordenada &c) const {
 }
 
 Pokemon Juego::pokemonEnPos(const Coordenada &c) const{
+    #ifdef DEBUG
     assert(posConPokemons().Pertenece(c));
+    #endif
     return _posicionesPokemons.significado(c).Siguiente().tipo;
 }
 
 Nat Juego::cantMovimientosParaCaptura(const Coordenada &c) const {
+    #ifdef DEBUG
     assert(posConPokemons().Pertenece(c));
+    #endif
     if(!_posicionesPokemons.significado(c).Siguiente().jugadoresEnRango.EsVacia())
         return (10 - _posicionesPokemons.significado(c).Siguiente().contador);
     else
@@ -291,7 +295,9 @@ Nat Juego::cantMovimientosParaCaptura(const Coordenada &c) const {
 }
 
 Nat Juego::indiceRareza(const Pokemon &p) const{
+    #ifdef DEBUG
     assert(perteneceAPokemons(p));
+    #endif
     Nat cuantosP = cantMismaEspecie(p);
     return(100 - (100 * cuantosP / cantPokemonsTotales()));
 }

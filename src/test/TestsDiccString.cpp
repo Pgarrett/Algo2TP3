@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../mini_test.h"
-#include "../modulos/diccString.h"
+#include "../modulos/DiccString.h"
 #include "TestsDiccString.h"
 
 

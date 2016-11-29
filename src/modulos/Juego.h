@@ -5,7 +5,7 @@
 #include "ColaMinPrior.h"
 #include "../aed2/Vector.h"
 #include "DiccMat.h"
-#include "diccString.h"
+#include "DiccString.h"
 #include "../aed2/Lista.h"
 
 class Juego {

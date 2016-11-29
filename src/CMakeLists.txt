@@ -21,7 +21,7 @@ set(SOURCE_FILES
         test/TestsMapa.cpp test/TestsMapa.h test/TestsJuego.cpp
         test/TestsJuego.h modulos/Mapa.cpp modulos/Mapa.h
         modulos/DiccMat.h modulos/Juego.cpp modulos/Juego.h
-        modulos/diccString.h
+        modulos/DiccString.h
         test/TestsDiccMat.cpp test/TestsDiccMat.h test/TestsDiccString.cpp test/TestsDiccString.h
         modulos/ColaMinPrior.h
         test/TestsColaMinPrior.cpp test/TestsColaMinPrior.h test/TestsMoverse.cpp test/TestsMoverse.h)
