@@ -126,7 +126,7 @@ private:
         Coordenada posicion;
         Lista<Jugador>::Iterador itPosicion;
         InfoJugador(Conj<Jugador>::Iterador ID) : id(ID), estaConectado(false), sanciones(0),
-                                                  pokemonesCapturados(Conj<Conj<InfoPokemon>::Iterador>()), posicion(Coordenada(0, 0)),
+                                                  pokemonesCapturados(Conj<Lista<InfoPokemon>::Iterador>()), posicion(Coordenada(0, 0)),
                                                   itPosicion(Lista<Jugador>().CrearIt()) { }
     };
 

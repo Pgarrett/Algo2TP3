@@ -53,7 +53,7 @@ void TestsJuego::correr_tests() {
     //AgregarPokemon
     RUN_TEST(test_juego_agregar_pokemones);
     RUN_TEST(test_juego_agregar_pokemones_en_todas_las_posiciones_posibles);
-    RUN_TEST(test_juego_pokemon_recien_agregado_sin_movimientos_para_captura)
+    RUN_TEST(test_juego_pokemon_sin_jugadores_cerca_no_tiene_movimientos_para_captura)
 }
 
 Mapa crearMapaDefault() {
@@ -436,7 +436,7 @@ void TestsJuego::test_juego_agregar_pokemones_en_todas_las_posiciones_posibles()
     }
 }
 
-void TestsJuego::test_juego_pokemon_recien_agregado_sin_movimientos_para_captura() {
+void TestsJuego::test_juego_pokemon_sin_jugadores_cerca_no_tiene_movimientos_para_captura() {
     Mapa mapa = crearMapaDefault();
     Juego j(mapa);
 

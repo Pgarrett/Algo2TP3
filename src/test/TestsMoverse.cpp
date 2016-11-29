@@ -175,7 +175,7 @@ void TestsMoverse::test_moverse_movimientos_captura_en_rango() {
 
     juego.moverse(j, c2);
 
-    ASSERT_EQ(juego.cantMovimientosParaCaptura(c1), 0)
+    ASSERT_EQ(juego.cantMovimientosParaCaptura(c1), 10)
 }
 
 //    La cantidad de pokemones totales debe bajar cuando se expulsa a alguien con pokemones
