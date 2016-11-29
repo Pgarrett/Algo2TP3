@@ -30,6 +30,20 @@ private:
 
     static void test_moverse_movimientos_captura_en_rango();
 
+    static void test_moverse_movimientos_captura_sin_entrenadores_cerca();
+
+    static void test_moverse_movimientos_captura_fuera_de_rango();
+
+    static void test_moverse_movimientos_captura_movimiento_invalido_no_suma();
+
+    static void test_moverse_movimientos_captura_en_rango_otro_poke();
+
+    static void test_moverse_movimientos_captura_sin_entrenadores_cerca_otro_poke();
+
+    static void test_moverse_movimientos_captura_entro_a_un_rango();
+
+    static void test_moverse_movimientos_captura_sale_de_un_rango();
+
     static void test_moverse_expulsar_cantidad_total_de_pokemones();
 //
 //

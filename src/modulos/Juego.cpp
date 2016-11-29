@@ -125,7 +125,6 @@ void Juego::AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, Juego::InfoJugador
 void Juego::moverse(const Jugador &id, const Coordenada &c) {
     InfoVectorJugadores tupJug = _jugadoresPorID[id];
     InfoJugador& infoJ = tupJug.info.Siguiente();
-
     if (debeSancionarse(id, c)){
         if (infoJ.sanciones < 4){
             infoJ.sanciones++;
@@ -140,6 +139,16 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
 //            }
         }
     } else {
+        if (hayPokemonCercano(c)) { // Va a estar o seguir en un rango
+            Coordenada p = posPokemonCercano(c);
+            if (!hayPokemonCercano(infoJ.posicion)){ // No estaba en un rango antes
+                InfoPokemon &infoP = _posicionesPokemons.significado(p).Siguiente();
+                infoP.contador = 0;
+            }
+        } else { // No va a estar en un rango
+
+        }
+
         infoJ.itPosicion.EliminarSiguiente();
         AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
     }
