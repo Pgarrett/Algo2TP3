@@ -8,6 +8,7 @@
 #include "test/TestsDiccString.h"
 #include "test/TestsColaMinPrior.h"
 #include "test/TestsMoverse.h"
+#include "test/TestsComplejidad.h"
 
 int main(int argc, char **argv)
 {
@@ -17,5 +18,7 @@ int main(int argc, char **argv)
   TestsMapa::correr_tests();
   TestsJuego::correr_tests();
   TestsMoverse::correr_tests();
+  TestsComplejidad::correr_tests();
   return 0;
 }
+

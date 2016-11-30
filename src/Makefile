@@ -1,7 +1,7 @@
 XXFLAGS = -g -Wall
 
-SOURCES = aed2/ConjAcotado.cpp Driver.cpp tests.cpp test/TestsMapa.cpp test/TestsJuego.cpp modulos/Juego.cpp test/TestsDiccMat.cpp test/TestsDiccString.cpp test/TestsColaMinPrior.cpp modulos/Mapa.cpp test/TestsMoverse.cpp
-HEADERS = aed2/Arreglo.h aed2/Conj.h aed2/ConjAcotado.h aed2/Dicc.h aed2/Lista.h aed2/TiposBasicos.h aed2/Vector.h aed2.h Driver.h mini_test.h TiposJuego.h test/TestsMapa.h test/TestsJuego.h modulos/Mapa.h modulos/DiccMat.h modulos/Juego.h modulos/DiccString.h test/TestsDiccMat.h test/TestsDiccString.h modulos/ColaMinPrior.h test/TestsColaMinPrior.h test/TestsMoverse.h
+SOURCES = aed2/ConjAcotado.cpp Driver.cpp tests.cpp test/TestsMapa.cpp test/TestsJuego.cpp modulos/Juego.cpp test/TestsDiccMat.cpp test/TestsDiccString.cpp test/TestsColaMinPrior.cpp modulos/Mapa.cpp test/TestsMoverse.cpp test/TestsComplejidad.cpp
+HEADERS = aed2/Arreglo.h aed2/Conj.h aed2/ConjAcotado.h aed2/Dicc.h aed2/Lista.h aed2/TiposBasicos.h aed2/Vector.h aed2.h Driver.h mini_test.h TiposJuego.h test/TestsMapa.h test/TestsJuego.h modulos/Mapa.h modulos/DiccMat.h modulos/Juego.h modulos/DiccString.h test/TestsDiccMat.h test/TestsDiccString.h modulos/ColaMinPrior.h test/TestsColaMinPrior.h test/TestsMoverse.h test/TestsComplejidad.h
 OBJS = $(SOURCES:.cpp=.o)
 
 LIBS =
