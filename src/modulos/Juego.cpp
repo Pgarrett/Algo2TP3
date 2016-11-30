@@ -15,7 +15,7 @@ Juego::~Juego() {
     }
 }
 
-const Mapa Juego::mapa() const {
+const Mapa & Juego::mapa() const {
     return _mapa;
 }
 
@@ -33,7 +33,7 @@ void Juego::agregarPokemon(const Pokemon &p, const Coordenada &c){
         while(desdeLong <= (c.longitud + 2)){
             Coordenada cIndex = Coordenada(desdeLat, desdeLong);
             if(DistEuclidea(cIndex, c) <= 4){
-                if(_posicionesJugadores.definido(cIndex) && mapa().hayCamino(c, cIndex)){
+                if(_posicionesJugadores.definido(cIndex) && _mapa.hayCamino(c, cIndex)){
                     Lista<Jugador>::Iterador itJugadores = (*_posicionesJugadores.significado(cIndex)).CrearIt();
                     while(itJugadores.HaySiguiente()){
                         Jugador e = itJugadores.Siguiente();
@@ -107,7 +107,7 @@ void Juego::conectarse(const Jugador &j, const Coordenada &c) {
     InfoJugador &infoJ = itJug.Siguiente();
     infoJ.estaConectado = true;
     AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
-    if (hayPokemonCercano(c) && mapa().hayCamino(c, posPokemonCercano(c))){
+    if (hayPokemonCercano(c) && _mapa.hayCamino(c, posPokemonCercano(c))){
         InfoPokemon &p = _posicionesPokemons.significado(posPokemonCercano(c)).Siguiente();
         const ColaMinPrior<Lista<Jugador>::Iterador>::Iterador &iterador = p.jugadoresEnRango.Encolar(infoJ.pokemonesCapturados.Longitud(), infoJ.itPosicion);
         _jugadoresPorID[j].encolado = iterador;
@@ -153,11 +153,13 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
             tupJug.info.EliminarSiguiente();
         }
     } else {
-        if (hayPokemonCercano(c) && mapa().hayCamino(c, posPokemonCercano(c))){ // Va a estar o seguir en un rango
+        if (hayPokemonCercano(c) && _mapa.hayCamino(c, posPokemonCercano(c))){ // Va a estar o seguir en un rango
             Coordenada p = posPokemonCercano(c);
             if (!hayPokemonCercano(infoJ.posicion)){ // No estaba en un rango antes
                 InfoPokemon &infoP = _posicionesPokemons.significado(p).Siguiente();
                 infoP.contador = 0;
+                const ColaMinPrior<Lista<Jugador>::Iterador>::Iterador &iterador = infoP.jugadoresEnRango.Encolar(infoJ.pokemonesCapturados.Longitud(), infoJ.itPosicion);
+                _jugadoresPorID[id].encolado = iterador;
             }
             ActualizarMenos(c);
         } else { // No va a estar en un rango

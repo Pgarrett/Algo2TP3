@@ -11,6 +11,7 @@ Driver::Driver(const Conj<Coordenada> &cs) {
     Conj<Coordenada>::const_Iterador itConj = cs.CrearIt();
     while (itConj.HaySiguiente()) {
         m.agregarCoordenada(itConj.Siguiente());
+        itConj.Avanzar();
     }
     _juego = new Juego(m);
 }

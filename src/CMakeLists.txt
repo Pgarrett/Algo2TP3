@@ -24,7 +24,7 @@ set(SOURCE_FILES
         modulos/DiccString.h
         test/TestsDiccMat.cpp test/TestsDiccMat.h test/TestsDiccString.cpp test/TestsDiccString.h
         modulos/ColaMinPrior.h
-        test/TestsColaMinPrior.cpp test/TestsColaMinPrior.h test/TestsMoverse.cpp test/TestsMoverse.h)
+        test/TestsColaMinPrior.cpp test/TestsColaMinPrior.h test/TestsMoverse.cpp test/TestsMoverse.h test/TestsComplejidad.cpp test/TestsComplejidad.h)
 
 add_executable(src ${SOURCE_FILES})
 add_definitions(-std=c++03)

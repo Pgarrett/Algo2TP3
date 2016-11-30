@@ -37,7 +37,7 @@ public:
     void moverse(const Jugador &id, const Coordenada &c);
 
     /* Devuelve todas las coordenadas que posee el mapa del Juego. */
-    const Mapa mapa() const;
+    const Mapa& mapa() const;
 
     /* Devuelve los jugadores que fueron insertados en el juego y no fueron eliminados. */
     Conj<Jugador> jugadores() const;
