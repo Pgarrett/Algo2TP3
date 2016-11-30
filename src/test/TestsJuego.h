@@ -78,6 +78,10 @@ private:
     static void test_juego_agregar_pokemones_en_todas_las_posiciones_posibles();
 
     static void test_juego_pokemon_sin_jugadores_cerca_no_tiene_movimientos_para_captura();
+
+    //Juego
+
+    static void test_juego_integral();
 };
 
 

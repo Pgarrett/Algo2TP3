@@ -53,7 +53,10 @@ void TestsJuego::correr_tests() {
     //AgregarPokemon
     RUN_TEST(test_juego_agregar_pokemones);
     RUN_TEST(test_juego_agregar_pokemones_en_todas_las_posiciones_posibles);
-    RUN_TEST(test_juego_pokemon_sin_jugadores_cerca_no_tiene_movimientos_para_captura)
+    RUN_TEST(test_juego_pokemon_sin_jugadores_cerca_no_tiene_movimientos_para_captura);
+
+    // Juego en si
+    RUN_TEST(test_juego_integral)
 }
 
 Mapa crearMapaDefault() {
@@ -86,6 +89,20 @@ Mapa crearMapaDefault_3(int a, int l) {
 //            cout << "Haciendo mapa 3 : " << (i*l+j) << "de" << (a*l) << endl;
         }
     }
+    return mapa;
+}
+
+Mapa crearMapaDefault_4(int ancho, int largo){
+    Mapa mapa;
+    for (int i = 0; i < ancho; ++i) {
+        for (int j = 0; j < largo; ++j) {
+            if (((i+j) % 10 != 0) && (i != j)){
+                mapa.agregarCoordenada(Coor(i,j));
+//                cout << "Coor(" << i << "," << j << ") " << endl;
+            }
+        }
+    }
+
     return mapa;
 }
 
@@ -444,3 +461,117 @@ void TestsJuego::test_juego_pokemon_sin_jugadores_cerca_no_tiene_movimientos_par
 
     ASSERT_EQ( j.cantMovimientosParaCaptura(Coor(0,2)), 0)
 }
+
+void TestsJuego::test_juego_integral(){
+    Mapa m = crearMapaDefault_4(10,10);
+    Juego pGo(m);
+    String tipo1 = "pichoto";
+    String tipo2 = "bolbasor";
+    String tipo3 = "kakuna";
+    String tipo4 = "eslouproc";
+    int cont_tipo_1 = 0; int cont_tipo_2 = 0; int cont_tipo_3 = 0; int cont_tipo_4 = 0;
+    int cont_coor = 0;
+
+//    cout << "Llenar coordenas... " << endl;
+    //Lleno de pokemones
+    Conj<Coordenada> cs = pGo.mapa().coordenadas();
+    Conj<Coordenada>::Iterador itCoor = cs.CrearIt();
+    int cardinalcs = cs.Cardinal();
+    for (Coordenada ci = itCoor.Siguiente() ; itCoor.HaySiguiente(); itCoor.Avanzar()) {
+        if(pGo.puedoAgregarPokemon(itCoor.Siguiente())){
+            if(pGo.puedoAgregarPokemon(itCoor.Siguiente())){
+                if(itCoor.Siguiente().latitud < 20){
+                    pGo.agregarPokemon(tipo4, itCoor.Siguiente());
+                    ++cont_tipo_4;
+                }else if(itCoor.Siguiente().latitud < 40){
+                    pGo.agregarPokemon(tipo3, itCoor.Siguiente());
+                    ++cont_tipo_3;
+                }else if(itCoor.Siguiente().latitud < 60){
+                    pGo.agregarPokemon(tipo2, itCoor.Siguiente());
+                    ++cont_tipo_2;
+                }else{
+                    pGo.agregarPokemon(tipo1, itCoor.Siguiente());
+                    ++cont_tipo_1;
+                }
+            }
+        }
+        itCoor.Avanzar();
+        ++cont_coor;
+ //       cout << "Progreso Coordenadas = " << (cont_coor*100/cardinalcs) << " %" << endl;
+    }
+
+    ASSERT_EQ(pGo.cantMismaEspecie(tipo1), cont_tipo_1);
+    ASSERT_EQ(pGo.cantMismaEspecie(tipo2), cont_tipo_2);
+    ASSERT_EQ(pGo.cantMismaEspecie(tipo3), cont_tipo_3);
+    ASSERT_EQ(pGo.cantMismaEspecie(tipo4), cont_tipo_4);
+    ASSERT_EQ(pGo.cantPokemonsTotales(), cont_tipo_1+cont_tipo_2+cont_tipo_3+cont_tipo_4);
+
+//    cout << "Pokes... " << tipo1 << " : " << cont_tipo_1 << endl;
+//    cout << "........ " << tipo2 << " : " << cont_tipo_2 << endl;
+//    cout << "........ " << tipo3 << " : " << cont_tipo_3 << endl;
+//    cout << "........ " << tipo4 << " : " << cont_tipo_4 << endl;
+
+
+    int cantJugadores = 35; int j = 0; cont_coor = 0;
+    itCoor = cs.CrearIt();
+    Coordenada CoorInicial = itCoor.Siguiente();
+    while(itCoor.HaySiguiente() && cantJugadores > j){
+        Jugador id = pGo.agregarJugador(); ++j;
+        pGo.conectarse(id,CoorInicial);
+        itCoor.Avanzar(); ++cont_coor;
+//        cout << "Progreso Jugadores = " << (cont_coor*100/cardinalcs) << " %  -  " << (j*100/cantJugadores) << " % " << endl;
+    }
+
+//    cout << "conectar..." <<endl;
+    itCoor = cs.CrearIt();
+    Coordenada CoorValida = itCoor.Siguiente();
+    Coordenada CoorInvalida = itCoor.Anterior();
+    bool SetValida = false, SetInvalida = false;
+    while(itCoor.HaySiguiente() && !SetInvalida && !SetValida){
+        itCoor.Avanzar();
+        if(!SetValida && !pGo.MovimientoSancionable(CoorInicial, itCoor.Siguiente())){
+            CoorValida = itCoor.Siguiente();
+            SetValida = true;
+        }
+
+        if(!SetInvalida && pGo.MovimientoSancionable(CoorInicial, itCoor.Siguiente())){
+            CoorInvalida = itCoor.Siguiente();
+            SetInvalida = true;
+        }
+    }
+//    cout << "fin conectar..." <<endl;
+
+//    cout << "mover..." <<endl;
+    Conj<Jugador> js = pGo.jugadores(); //Bug poronga
+    Conj<Jugador>::Iterador itJugador = js.CrearIt();
+    while(itJugador.HaySiguiente()){
+//        cout << "mueve el jugador = " << itJugador.Siguiente() << endl;
+        if (itJugador.Siguiente() % 2 == 0){
+            pGo.moverse(itJugador.Siguiente(),CoorValida);
+//            cout << "......." << itJugador.Siguiente() << " se movio a una posicion valida" <<endl;
+        }else{
+            pGo.moverse(itJugador.Siguiente(),CoorInvalida);
+//            cout << "......." << itJugador.Siguiente() << " se movio a una posicion invalida" <<endl;
+        }
+        itJugador.Avanzar();
+    }
+//    cout << "fin mover..." <<endl;
+
+    itJugador = js.CrearIt();
+    while(itJugador.HaySiguiente()){
+        if (itJugador.Siguiente() % 2 == 0){
+            ASSERT(pGo.posicion(itJugador.Siguiente()) == CoorValida);
+            ASSERT(pGo.sanciones(itJugador.Siguiente()) == 0);
+//            cout << "pGo.hayPokemonCercano(CoorValida) = " << pGo.hayPokemonCercano(CoorValida) << endl;
+//            cout << "pGo.entrenadoresPosibles(" << CoorValida.latitud << "," << CoorValida.longitud <<").Pertenece(" << itJugador.Siguiente() << ") = " << pGo.entrenadoresPosibles(pGo.posPokemonCercano(CoorValida)).Pertenece(itJugador.Siguiente()) << endl;
+//            cout << "pGo.mapa().hayCamino((" << pGo.posicion(itJugador.Siguiente()).latitud << "," << pGo.posicion(itJugador.Siguiente()).longitud << "),(" << pGo.posPokemonCercano(CoorValida).latitud << "," << pGo.posPokemonCercano(CoorValida).longitud << ")) = " << pGo.mapa().hayCamino(pGo.posicion(itJugador.Siguiente()),pGo.posPokemonCercano(CoorValida)) << endl;
+            ASSERT(pGo.hayPokemonCercano(CoorValida) && pGo.mapa().hayCamino(pGo.posicion(itJugador.Siguiente()),pGo.posPokemonCercano(CoorValida)) &&  pGo.entrenadoresPosibles(pGo.posPokemonCercano(CoorValida)).Pertenece(itJugador.Siguiente()));
+        }else{
+            ASSERT(pGo.posicion(itJugador.Siguiente()) == CoorInicial);
+            ASSERT(pGo.sanciones(itJugador.Siguiente()) == 1);
+        }
+        itJugador.Avanzar();
+    }
+
+}
+

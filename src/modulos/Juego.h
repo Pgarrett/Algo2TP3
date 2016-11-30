@@ -103,6 +103,7 @@ public:
 
     /* SOLO PARA TEST */
     Lista<Jugador>::const_Iterador jugadoresEnPos(const Coordenada &c) const;
+    bool MovimientoSancionable(const Coordenada c1, const Coordenada c2) const;
 
 private:
 

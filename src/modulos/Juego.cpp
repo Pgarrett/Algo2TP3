@@ -220,6 +220,10 @@ bool Juego::debeSancionarse(const Jugador j, const Coordenada c) const {
     return !_mapa.hayCamino(infoJ.posicion, c) || DistEuclidea(infoJ.posicion, c) > 100;
 }
 
+bool Juego::MovimientoSancionable(const Coordenada c1, const Coordenada c2) const{
+    return !_mapa.hayCamino(c1, c2) || DistEuclidea(c1, c2) > 100;
+}
+
 Conj<Jugador> Juego::entrenadoresPosibles(const Coordenada &c) const {
     Conj<Jugador> posibles;
     Conj<Jugador>::const_Iterador it = _idsJugadores.CrearIt();
