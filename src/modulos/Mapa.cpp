@@ -24,26 +24,35 @@ void Mapa::agregarCoordenada(const Coordenada &c) {
 
 void Mapa::redefinirSecciones() {
     delete secciones;
-    secciones = new DiccMat<Nat>(largo(), ancho());
+    Nat l = largo();
+    Nat a = ancho();
+    secciones = new DiccMat<Nat>(l, a);
+
+    DiccMat<bool> coordsMapa(l, a);
+    ItConj it1 = coords.CrearIt();
+    while (it1.HaySiguiente()) {
+        coordsMapa.definir(it1.Siguiente(), true);
+        it1.Avanzar();
+    }
     Nat seccion = 0;
     ItConj it = coords.CrearIt();
     while (it.HaySiguiente()) {
         Coor c = it.Siguiente();
         if (!secciones->definido(c))
-            definirSeccion(c, seccion++);
+            definirSeccion(coordsMapa, c, seccion++);
         it.Avanzar();
     }
 }
 
-void Mapa::definirSeccion(Coordenada c, Nat id) {
-    if (posExistente(c) && !secciones->definido(c)) {
+void Mapa::definirSeccion(DiccMat<bool> &d, Coordenada c, Nat id) {
+    if (d.definido(c) && !secciones->definido(c)) {
         secciones->definir(c, id);
-        definirSeccion(Coor(c.latitud + 1, c.longitud), id);
-        definirSeccion(Coor(c.latitud, c.longitud + 1), id);
+        definirSeccion(d, Coor(c.latitud + 1, c.longitud), id);
+        definirSeccion(d, Coor(c.latitud, c.longitud + 1), id);
         if (c.longitud > 0)
-            definirSeccion(Coor(c.latitud, c.longitud - 1), id);
+            definirSeccion(d, Coor(c.latitud, c.longitud - 1), id);
         if (c.latitud > 0)
-            definirSeccion(Coor(c.latitud - 1, c.longitud), id);
+            definirSeccion(d, Coor(c.latitud - 1, c.longitud), id);
     }
 }
 

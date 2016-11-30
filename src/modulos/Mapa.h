@@ -23,7 +23,7 @@ private:
     DiccMat<Nat>* secciones;
 
     void redefinirSecciones();
-    void definirSeccion(Coordenada c, Nat id);
+    void definirSeccion(DiccMat<bool> &d, Coordenada c, Nat id);
 };
 
 

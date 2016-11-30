@@ -9,7 +9,7 @@
  * ya no cumplirán con la complejiad algoritmica especificada 
  * en el apunte correspondiente.
  */
-#define DEBUG
+//#define DEBUG
 
 #include "aed2/TiposBasicos.h"
 #include "aed2/Arreglo.h"
