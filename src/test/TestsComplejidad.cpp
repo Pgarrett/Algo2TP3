@@ -11,15 +11,15 @@ using namespace std;
     std::cout << msg << " - " << (float(clock() - start ) / CLOCKS_PER_SEC) << std::endl;\
 }
 
-#define ANCHO 100
-#define LARGO 100
-#define STEP 5
-#define JUGADORES 600
+#define ANCHO 120
+#define LARGO 120
+#define STEP 6
+#define JUGADORES 10
 
 void TestsComplejidad::correr_tests() {
-    RUN_TEST(test_crear_mapa)
-    RUN_TEST(test_crear_juego)
-    RUN_TEST(test_crear_driver)
+//    RUN_TEST(test_crear_mapa)
+//    RUN_TEST(test_crear_juego)
+//    RUN_TEST(test_crear_driver)
     RUN_TEST(test_complejidad)
 }
 
@@ -44,13 +44,13 @@ void TestsComplejidad::test_complejidad() {
     cout << " " << endl;
     Driver j(crear_mapa().coordenadas());
 
-    TIMED("pokemones", agregarPokemones(j));
     TIMED("jugadores", agregarJugadores(j));
+    TIMED("pokemones", agregarPokemones(j));
     TIMED("conectar", conectarJugadores(j));
     TIMED("posiciones", posiciones(j));
     for(int i = 0; i < 8; i++)
         moverTodos(j);
-    TIMED("mover", moverTodos(j));
+   // TIMED("mover", moverTodos(j));
 }
 
 void TestsComplejidad::moverTodos(Driver& j) {

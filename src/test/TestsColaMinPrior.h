@@ -22,6 +22,8 @@ private:
 
     static void test_cola_min_prior_violento();
 
+    static void test_encolar();
+
 };
 
 #endif //SRC_TESTSCOLAMINPRIOR_H

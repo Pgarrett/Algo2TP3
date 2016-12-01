@@ -119,8 +119,7 @@ void Juego::AgregarJugadorEnPos(DiccMat<Lista<Jugador> *> &d, Juego::InfoJugador
     if (not d.definido(c)) {
         d.definir(c, new Lista<Jugador>());
     }
-    Lista<Jugador>& l = *(d.significado(c));
-    j.itPosicion = l.AgregarAtras(j.id.Siguiente());
+    j.itPosicion = (*(d.significado(c))).AgregarAtras(j.id.Siguiente());
     j.posicion = c;
 }
 
@@ -153,23 +152,28 @@ void Juego::moverse(const Jugador &id, const Coordenada &c) {
             tupJug.info.EliminarSiguiente();
         }
     } else {
+        Coordenada posVieja = infoJ.posicion;
+        infoJ.itPosicion.EliminarSiguiente();
+        AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
         if (hayPokemonCercano(c) && _mapa.hayCamino(c, posPokemonCercano(c))){ // Va a estar o seguir en un rango
             Coordenada p = posPokemonCercano(c);
-            if (!hayPokemonCercano(infoJ.posicion)){ // No estaba en un rango antes
+            if (!hayPokemonCercano(posVieja)){ // No estaba en un rango antes
                 InfoPokemon &infoP = _posicionesPokemons.significado(p).Siguiente();
                 infoP.contador = 0;
-                const ColaMinPrior<Lista<Jugador>::Iterador>::Iterador &iterador = infoP.jugadoresEnRango.Encolar(infoJ.pokemonesCapturados.Longitud(), infoJ.itPosicion);
-                _jugadoresPorID[id].encolado = iterador;
+
+                Nat cantPokemonesJug = infoJ.pokemonesCapturados.Longitud();
+                ColaMinPrior<Lista<Jugador>::Iterador> &prior = infoP.jugadoresEnRango;
+                ColaMinPrior<Lista<Jugador>::Iterador>::Iterador itCola = prior.Encolar(cantPokemonesJug, infoJ.itPosicion);
+                _jugadoresPorID[id].encolado = itCola;
+
             }
             ActualizarMenos(c);
         } else { // No va a estar en un rango
-            if (hayPokemonCercano(infoJ.posicion)){ // Salio de un rango
+            if (hayPokemonCercano(posVieja)){ // Salio de un rango
                 tupJug.encolado.EliminarSiguiente();
             }
             ActualizarTodos();
         }
-        infoJ.itPosicion.EliminarSiguiente();
-        AgregarJugadorEnPos(_posicionesJugadores, infoJ, c);
     }
 }
 
@@ -280,7 +284,7 @@ Lista<Jugador>::const_Iterador Juego::jugadoresEnPos(const Coordenada &c) const 
 }
 
 void Juego::desconectarse(const Jugador &j) {
-    InfoVectorJugadores ivf = _jugadoresPorID.operator[](j);
+    InfoVectorJugadores ivf = _jugadoresPorID[j];
     if (hayPokemonCercano(ivf.info.Siguiente().posicion)) {
         ivf.encolado.EliminarSiguiente();   // TODO checkear si verdaderamente lo elimina, o hay que tengo que trabajar con la referencia de InfoVectorJugadores
     }

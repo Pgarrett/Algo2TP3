@@ -12,6 +12,8 @@ using namespace std;
 template <typename T>
 class ColaMinPrior{
   	public:
+	ColaMinPrior(const ColaMinPrior &c);
+
 	class Iterador;
   	/// Crea una Cola Vacía. (Operación Vacia())
   	ColaMinPrior();
@@ -102,6 +104,14 @@ template <typename T>
 ColaMinPrior<T>::ColaMinPrior()
   : _proximo(NULL), _tamano(0)
 {}
+
+
+template <typename T>
+ColaMinPrior<T>::ColaMinPrior(const ColaMinPrior& c)
+{
+	_proximo = NULL;
+	_tamano = 0;
+}
 
 template <typename T>
 ColaMinPrior<T>::~ColaMinPrior(){
@@ -294,7 +304,7 @@ Arreglo<int>* ColaMinPrior<T>::DecimalABinario(Nat d){
 
 template <typename T>
 void ColaMinPrior<T>::swapCola(typename ColaMinPrior<T>::Nodo* p, typename ColaMinPrior<T>::Nodo* q){
-/*	cout << endl << "ColaMinPrior" << endl;	 
+/*	cout << endl << "ColaMinPrior" << endl;
 	cout << "p_0 = " << p << " prior : " << p->prior << " elem : " << p->elem << endl;
 	cout << " - - - - padre : " << p->padre << " izq : " << p->izq << " der : " << p->der << endl;
 	cout << "q_0 = " << q << " prior : " << q->prior << " elem : " << q->elem << endl;

@@ -9,14 +9,15 @@ using namespace std;
 using namespace aed2;
 
 void TestsColaMinPrior::correr_tests() {
-    RUN_TEST(test_cola_min_prior_crear);
-    RUN_TEST(test_cola_min_prior_encolar);
-    RUN_TEST(test_cola_min_prior_desencolar);
-    RUN_TEST(test_cola_min_prior_desencolar_dos);
-    RUN_TEST(test_cola_min_prior_iterator_eliminarSig);
-    RUN_TEST(test_cola_min_prior_iterator);
-    RUN_TEST(test_cola_min_prior_iterator_eliminarTodoDesdeElIt);
-    RUN_TEST(test_cola_min_prior_violento);
+//    RUN_TEST(test_cola_min_prior_crear);
+//    RUN_TEST(test_cola_min_prior_encolar);
+//    RUN_TEST(test_cola_min_prior_desencolar);
+//    RUN_TEST(test_cola_min_prior_desencolar_dos);
+//    RUN_TEST(test_cola_min_prior_iterator_eliminarSig);
+//    RUN_TEST(test_cola_min_prior_iterator);
+//    RUN_TEST(test_cola_min_prior_iterator_eliminarTodoDesdeElIt);
+//    RUN_TEST(test_cola_min_prior_violento);
+    RUN_TEST(test_encolar)
 }
 
 void TestsColaMinPrior::test_cola_min_prior_crear() {
@@ -202,6 +203,20 @@ void TestsColaMinPrior::test_cola_min_prior_violento() {
     ASSERT(cl.Tamano() == 4);
 //	cout << cl << endl;
 }
+
+void TestsColaMinPrior::test_encolar() {
+    ColaMinPrior<int> cl;
+    cl.Encolar(4, 1);
+    cl.Encolar(2, 2);
+    cl.Encolar(6, 3);
+    cl.Encolar(5, 4);
+    cl.Encolar(4, 5);
+    cl.Encolar(23, 6);
+    cl.Encolar(1, 7);
+    ASSERT_EQ(cl.Proximo(), 7);
+}
+
+
 
 
 

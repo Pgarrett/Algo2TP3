@@ -58,6 +58,8 @@ private:
 
     static void test_moverse_atrapa_el_jugador_con_menos_pokemones();
 
+    static void test_moverse_el_que_rompia();
+
     static void test_moverse_si_salio_del_rango_no_atrapa();
 
     static void test_moverse_jugador_desconectado_no_atrapa();

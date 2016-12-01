@@ -36,6 +36,7 @@ void TestsMoverse::correr_tests() {
     RUN_TEST(test_moverse_pokemon_atrapado_no_tiene_posicion)
     RUN_TEST(test_moverse_jugador_desconectado_no_atrapa)
     RUN_TEST(test_moverse_si_salio_del_rango_no_atrapa)
+    RUN_TEST(test_moverse_el_que_rompia)
     RUN_TEST(test_moverse_atrapa_el_jugador_con_menos_pokemones)
     RUN_TEST(test_moverse_expulsar_cantidad_total_de_pokemones)
     RUN_TEST(test_moverse_expulsar_cantidad_pokemones_por_especie)
@@ -417,7 +418,7 @@ void TestsMoverse::test_moverse_atrapa_el_jugador_con_menos_pokemones() {
     hacerQueCapturen(juego, m, c5);
     juego.agregarPokemon("poke", c1);
     hacerQueCapturen(juego, m, c5);
-    // j2 sale del rango
+    // j1 sale del rango
     juego.moverse(j1, c4);
 
     Jugador j2 = agregarJugadorConectadoEn(juego, c1);
@@ -439,6 +440,20 @@ void TestsMoverse::test_moverse_atrapa_el_jugador_con_menos_pokemones() {
 
     // j2 debe haber capturado
     ASSERT_EQ(juego.pokemons(j2).CantClaves(), 1);
+}
+
+void TestsMoverse::test_moverse_el_que_rompia() {
+    Coordenada c1(1, 1), c2(1, 2), c3(1, 3), c4(1, 4), c5(5,6);
+    Juego juego(mapaCon(c1, c2, c3, c4, c5));
+    Jugador m = agregarJugadorConectadoEn(juego, c5);
+
+    Jugador j1 = agregarJugadorConectadoEn(juego, c4);
+    juego.agregarPokemon("poke", c1);
+    juego.moverse(j1, c1);
+
+    hacerQueCapturen(juego, m, c5);
+
+    juego.moverse(m, c5);
 }
 
 void hacerQueCapturen(Juego& j, Jugador jug, Coor c){
